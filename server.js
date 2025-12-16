@@ -65,7 +65,8 @@ io.on('connection', (socket) => {
             players: [{ id: socket.id, name: playerName, symbol: 'X' }],
             board: ['', '', '', '', '', '', '', '', ''],
             currentTurn: 'X',
-            status: 'waiting'
+            status: 'waiting',
+            scores: { X: 0, O: 0 } // Track wins for each player
         };
         
         rooms.set(roomCode, room);
