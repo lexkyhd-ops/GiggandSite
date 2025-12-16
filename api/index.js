@@ -51,13 +51,32 @@ app.get('/client.js', (req, res) => {
 app.get('/socket.io/socket.io.js', (req, res) => {
     res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
     res.setHeader('Cache-Control', 'public, max-age=3600');
-    const socketIoPath = path.join(__dirname, '..', 'node_modules', 'socket.io', 'client-dist', 'socket.io.js');
-    res.sendFile(socketIoPath, (err) => {
-        if (err) {
-            console.error('Error serving socket.io.js:', err);
-            res.status(404).send('Socket.io not found');
+    
+    // Try different possible paths for socket.io.js
+    const possiblePaths = [
+        path.join(__dirname, '..', 'node_modules', 'socket.io', 'client-dist', 'socket.io.js'),
+        path.join(__dirname, '..', 'node_modules', 'socket.io-client', 'dist', 'socket.io.js'),
+        path.join(__dirname, '..', 'node_modules', 'socket.io', 'client', 'dist', 'socket.io.js')
+    ];
+    
+    let sent = false;
+    for (const socketIoPath of possiblePaths) {
+        try {
+            if (require('fs').existsSync(socketIoPath)) {
+                res.sendFile(socketIoPath);
+                sent = true;
+                break;
+            }
+        } catch (e) {
+            // Continue to next path
         }
-    });
+    }
+    
+    if (!sent) {
+        console.error('Socket.io.js not found in any expected location');
+        // Fallback: redirect to CDN
+        res.redirect('https://cdn.socket.io/4.6.1/socket.io.min.js');
+    }
 });
 
 // Root route - serve index.html
