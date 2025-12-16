@@ -310,7 +310,7 @@ header h1 {
     border: 3px solid #000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Fallback background for mobile */
-    background-image: url('images/giggand1.png');
+    background-image: url('images/giggand2.png');
     background-size: 120% 140%; /* Scale image larger, stretch vertically */
     background-position: center 30%; /* Position lower to show more of the image */
     background-repeat: no-repeat;
@@ -326,7 +326,7 @@ header h1 {
     bottom: -40%; /* Extend more beyond bottom to stretch downward */
     width: 140%; /* Make it larger than the board */
     height: 170%; /* Make it taller to stretch downward */
-    background-image: url('images/giggand1.png');
+    background-image: url('images/giggand2.png');
     background-size: contain; /* Show full image */
     background-position: center 30%; /* Position lower to show more of the image */
     background-repeat: no-repeat;
@@ -493,7 +493,7 @@ header h1 {
     .board {
         max-width: 100%;
         /* Ensure background image works on mobile */
-        background-image: url('images/giggand1.png');
+        background-image: url('images/giggand2.png');
         background-size: 120% 140%;
         background-position: center 30%;
         background-repeat: no-repeat;

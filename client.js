@@ -19,7 +19,7 @@ let gameStatus = 'waiting'; // waiting, playing, finished
 let playerScores = { X: 0, O: 0 }; // Track wins for each player
 
 // Single background image
-const backgroundImages = ['images/giggand1.png'];
+const backgroundImages = ['images/giggand2.png'];
 let currentBackgroundImage = backgroundImages[0];
 
 // DOM Elements
