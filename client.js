@@ -529,8 +529,8 @@ function updateBoardBackground() {
             let scaledImgWidth, scaledImgHeight;
             let offsetX, offsetY;
             
-            // Scale image to be very large (2.5x the board size)
-            const scaleMultiplier = 2.5; // Make image 2.5x larger than board
+            // Scale image to be very large (20x the board size)
+            const scaleMultiplier = 20; // Make image 20x larger than board
             
             if (imageAspect > boardAspect) {
                 // Image is wider - scale to be much larger than width
@@ -648,7 +648,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.4.0';
+        versionEl.textContent = '1.5.0';
     }
 });
 

@@ -19,7 +19,7 @@ body {
     background: white;
     border-radius: 20px;
     box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
-    max-width: 900px; /* Increased to accommodate very large image */
+    max-width: 2000px; /* Increased to accommodate 20x larger image */
     overflow: visible; /* Allow board image to extend if needed */
     width: 100%;
     padding: 30px;
@@ -292,8 +292,8 @@ header h1 {
     justify-content: center;
     margin: 30px 0;
     overflow: visible; /* Allow image to extend beyond container */
-    padding: 15%; /* More padding for larger image */
-    min-height: 600px; /* More space for larger image */
+    padding: 20%; /* More padding for 20x larger image */
+    min-height: 2000px; /* More space for 20x larger image */
 }
 
 .board {
