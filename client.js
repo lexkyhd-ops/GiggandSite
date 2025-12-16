@@ -166,6 +166,10 @@ socket.on('gameStart', (data) => {
     gameStatus = 'playing';
     showScreen('game');
     
+    // Reset board state to ensure clean start
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    updateBoard(gameBoard);
+    
     // Update turn AFTER currentPlayer is set
     if (data.currentTurn) {
         updateTurn(data.currentTurn);
@@ -173,6 +177,10 @@ socket.on('gameStart', (data) => {
         console.warn('No currentTurn in gameStart data');
         turnMessage.textContent = 'Warte auf Spielstart...';
     }
+    
+    // Clear any previous game over messages and re-enable board
+    resetGameBtn.style.display = 'none';
+    enableBoard();
     
     updateMessage(gameMessage, 'Spiel gestartet!', 'success');
     setTimeout(() => {
@@ -211,16 +219,15 @@ socket.on('playerLeft', () => {
 });
 
 socket.on('gameReset', () => {
-    // Don't reset currentPlayer here - it will be set again in gameStart
+    // Reset board state but keep currentPlayer - it will be set again in gameStart
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     isMyTurn = false;
+    gameStatus = 'waiting'; // Will be set to 'playing' in gameStart
     updateBoard(gameBoard);
     resetGameBtn.style.display = 'none';
-    updateMessage(gameMessage, 'Neues Spiel gestartet!', 'success');
-    setTimeout(() => {
-        gameMessage.textContent = '';
-        gameMessage.className = 'message';
-    }, 2000);
+    enableBoard(); // Re-enable board for new game
+    updateMessage(gameMessage, 'Neues Spiel wird gestartet...', 'info');
+    // gameStart event will follow and set everything correctly
 });
 
 socket.on('disconnect', () => {
