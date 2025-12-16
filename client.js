@@ -603,6 +603,13 @@ window.addEventListener('load', () => {
     }, 200);
 });
 
+// Update background when window resizes
+window.addEventListener('resize', () => {
+    setTimeout(() => {
+        updateBoardBackground();
+    }, 100);
+});
+
 // Update version display
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
