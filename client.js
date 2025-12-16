@@ -18,9 +18,9 @@ let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let gameStatus = 'waiting'; // waiting, playing, finished
 let playerScores = { X: 0, O: 0 }; // Track wins for each player
 
-// Random background image selection
-const backgroundImages = ['images/giggand1.png', 'images/giggand2.png'];
-let currentBackgroundImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+// Single background image
+const backgroundImages = ['images/giggand1.png'];
+let currentBackgroundImage = backgroundImages[0];
 
 // DOM Elements
 const lobbyScreen = document.getElementById('lobby');
@@ -505,7 +505,7 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center 25% !important;
+                    background-position: center 30% !important;
                     background-size: contain !important;
                     opacity: 1 !important;
                     -webkit-background-size: contain !important;
@@ -514,11 +514,11 @@ function updateBoardBackground() {
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center 20% !important;
-                    background-size: 120% !important;
-                    -webkit-background-size: 120% !important;
-                    -moz-background-size: 120% !important;
-                    -o-background-size: 120% !important;
+                    background-position: center 30% !important;
+                    background-size: 120% 140% !important;
+                    -webkit-background-size: 120% 140% !important;
+                    -moz-background-size: 120% 140% !important;
+                    -o-background-size: 120% 140% !important;
                 }
             `;
             // Remove old style if exists
@@ -529,16 +529,11 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = 'center 20%';
-            board.style.backgroundSize = '120%';
+            board.style.backgroundPosition = 'center 30%';
+            board.style.backgroundSize = '120% 140%';
         };
         img.onerror = () => {
             console.error('Failed to load background image:', currentBackgroundImage);
-            // Try fallback
-            const fallback = currentBackgroundImage === 'images/giggand1.png' ? 'images/giggand2.png' : 'images/giggand1.png';
-            console.log('Trying fallback:', fallback);
-            currentBackgroundImage = fallback;
-            img.src = fallback;
         };
         img.src = currentBackgroundImage;
     }

@@ -311,8 +311,8 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Fallback background for mobile */
     background-image: url('images/giggand1.png');
-    background-size: 120%; /* Scale image larger than board */
-    background-position: center 20%; /* Position to align forehead with board */
+    background-size: 120% 140%; /* Scale image larger, stretch vertically */
+    background-position: center 30%; /* Position lower to show more of the image */
     background-repeat: no-repeat;
 }
 
@@ -320,15 +320,15 @@ header h1 {
 .board::before {
     content: '';
     position: absolute;
-    top: -20%; /* Extend beyond top */
+    top: -30%; /* Extend more beyond top */
     left: -20%; /* Extend beyond left */
     right: -20%; /* Extend beyond right */
-    bottom: -20%; /* Extend beyond bottom */
+    bottom: -40%; /* Extend more beyond bottom to stretch downward */
     width: 140%; /* Make it larger than the board */
-    height: 140%; /* Make it larger than the board */
+    height: 170%; /* Make it taller to stretch downward */
     background-image: url('images/giggand1.png');
     background-size: contain; /* Show full image */
-    background-position: center 25%; /* Position forehead area to align with board center */
+    background-position: center 30%; /* Position lower to show more of the image */
     background-repeat: no-repeat;
     opacity: 1;
     z-index: 0;
@@ -494,22 +494,22 @@ header h1 {
         max-width: 100%;
         /* Ensure background image works on mobile */
         background-image: url('images/giggand1.png');
-        background-size: 120%;
-        background-position: center 20%;
+        background-size: 120% 140%;
+        background-position: center 30%;
         background-repeat: no-repeat;
-        -webkit-background-size: 120%;
-        -moz-background-size: 120%;
-        -o-background-size: 120%;
+        -webkit-background-size: 120% 140%;
+        -moz-background-size: 120% 140%;
+        -o-background-size: 120% 140%;
     }
     
     .board::before {
-        top: -15%;
+        top: -25%;
         left: -15%;
         right: -15%;
-        bottom: -15%;
+        bottom: -35%;
         width: 130%;
-        height: 130%;
-        background-position: center 25% !important;
+        height: 160%;
+        background-position: center 30% !important;
         background-size: contain !important;
         -webkit-background-size: contain !important;
         -moz-background-size: contain !important;
