@@ -8,10 +8,11 @@ const server = http.createServer(app);
 
 // Configure Socket.io for Vercel
 // Note: WebSockets don't work on Vercel Serverless Functions
-// We use polling as primary transport
+// We use polling ONLY - no WebSocket upgrades
 const io = socketIo(server, {
-    transports: ['polling', 'websocket'], // Polling first for Vercel compatibility
+    transports: ['polling'], // Only polling - no WebSocket
     allowEIO3: true,
+    allowUpgrades: false, // Disable WebSocket upgrades
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
@@ -122,6 +123,23 @@ function checkWinner(board) {
 // Socket connection handling
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
+    const transport = socket.conn?.transport?.name || 'unknown';
+    console.log('Connection transport:', transport);
+    
+    // #region agent log
+    const fs = require('fs');
+    const logPath = path.join(__dirname, '..', '.cursor', 'debug.log');
+    const logEntry = JSON.stringify({
+        location: 'api/index.js:54',
+        message: 'User connected',
+        data: { socketId: socket.id, transport: transport },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        runId: 'run1',
+        hypothesisId: 'D'
+    }) + '\n';
+    try { fs.appendFileSync(logPath, logEntry); } catch(e) {}
+    // #endregion
 
     socket.on('createRoom', ({ playerName }) => {
         const roomCode = generateRoomCode();

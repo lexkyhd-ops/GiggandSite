@@ -1,14 +1,18 @@
 // Initialize socket with better error handling
 // Use polling first for Vercel compatibility (WebSockets don't work on Vercel Serverless)
 const socket = io({
-    transports: ['polling', 'websocket'], // Polling first for Vercel
-    upgrade: true,
+    transports: ['polling'], // Only polling for Vercel - no WebSocket upgrade
+    upgrade: false, // Disable upgrade to prevent WebSocket attempts
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionAttempts: 5,
     timeout: 20000,
     forceNew: false
 });
+
+// #region agent log
+fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:11',message:'Socket.io initialized',data:{transports:['polling'],upgrade:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+// #endregion
 
 let playerName = '';
 let roomCode = '';
@@ -68,8 +72,12 @@ cells.forEach(cell => {
 // Socket Events
 socket.on('connect', () => {
     console.log('Connected to server');
-    const transport = socket.io.engine.transport.name;
+    const transport = socket.io.engine?.transport?.name || 'unknown';
     console.log('Transport:', transport);
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:67',message:'Socket connected',data:{transport:transport,connected:socket.connected},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
+    // #endregion
     
     if (transport === 'polling') {
         updateMessage(lobbyMessage, 'Mit Server verbunden (Polling-Modus)!', 'success');
@@ -85,6 +93,12 @@ socket.on('connect', () => {
 
 socket.on('connect_error', (error) => {
     console.error('Connection error:', error);
+    const transport = socket.io.engine?.transport?.name || 'unknown';
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:75',message:'Connection error',data:{error:error.message,transport:transport,type:error.type},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
+    // #endregion
+    
     updateMessage(lobbyMessage, 'Verbindungsfehler! Versuche erneut...', 'error');
     // Auto-retry after 3 seconds
     setTimeout(() => {
@@ -96,11 +110,22 @@ socket.on('connect_error', (error) => {
 
 socket.on('reconnect_attempt', () => {
     console.log('Reconnection attempt...');
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:87',message:'Reconnection attempt',data:{attemptNumber:socket.io.reconnecting},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
+    
     updateMessage(lobbyMessage, 'Verbindung wird wiederhergestellt...', 'info');
 });
 
 socket.on('reconnect', () => {
     console.log('Reconnected!');
+    const transport = socket.io.engine?.transport?.name || 'unknown';
+    
+    // #region agent log
+    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:95',message:'Reconnected',data:{transport:transport},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
+    // #endregion
+    
     updateMessage(lobbyMessage, 'Verbindung wiederhergestellt!', 'success');
     setTimeout(() => {
         lobbyMessage.textContent = '';
