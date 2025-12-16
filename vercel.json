@@ -9,6 +9,10 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/images/(.*)",
+      "destination": "/api/static.js"
+    },
+    {
       "source": "/style.css",
       "destination": "/api/static.js"
     },
