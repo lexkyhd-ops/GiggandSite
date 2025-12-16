@@ -309,34 +309,43 @@ header h1 {
     overflow: visible; /* Allow image to extend beyond board */
     border: 3px solid #000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    /* Transform board to match image coordinates */
+    /* P1: (401, 133) top-right, P2: (135, 336) bottom-left, P3: (395, 345) bottom-right, P4: (159, 141) top-left */
+    /* Using clip-path to map the board to these coordinates */
+    clip-path: polygon(39.75% 33.25%, 33.75% 33.25%, 33.75% 84%, 98.75% 84%, 98.75% 36.25%, 39.75% 33.25%);
     /* Fallback background for mobile */
     background-image: url('images/giggand2.png');
-    background-size: 120% 140%; /* Scale image larger, stretch vertically */
-    background-position: center 30%; /* Position lower to show more of the image */
+    background-size: 100% 100%; /* Full image size */
+    background-position: 0% 0%; /* Top left origin */
     background-repeat: no-repeat;
 }
 
-/* Background image for the board - extends beyond board to show full image */
+/* Background image for the board - positioned to match coordinates */
 .board::before {
     content: '';
     position: absolute;
-    top: -30%; /* Extend more beyond top */
-    left: -20%; /* Extend beyond left */
-    right: -20%; /* Extend beyond right */
-    bottom: -40%; /* Extend more beyond bottom to stretch downward */
-    width: 140%; /* Make it larger than the board */
-    height: 170%; /* Make it taller to stretch downward */
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
     background-image: url('images/giggand2.png');
-    background-size: contain; /* Show full image */
-    background-position: center 30%; /* Position lower to show more of the image */
+    /* Image dimensions assumed to be around 500x400 based on coordinates */
+    /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
+    /* Scale and position to match these coordinates */
+    background-size: 500px 400px; /* Adjust based on actual image size */
+    background-position: 0% 0%; /* Top left origin */
     background-repeat: no-repeat;
     opacity: 1;
     z-index: 0;
     border-radius: 7px;
     /* Ensure image loads on mobile */
-    -webkit-background-size: contain;
-    -moz-background-size: contain;
-    -o-background-size: contain;
+    -webkit-background-size: 500px 400px;
+    -moz-background-size: 500px 400px;
+    -o-background-size: 500px 400px;
+    /* Transform to match the trapezoid shape */
+    clip-path: polygon(39.75% 33.25%, 33.75% 33.25%, 33.75% 84%, 98.75% 84%, 98.75% 36.25%, 39.75% 33.25%);
 }
 
 /* Ensure cells are above the background */

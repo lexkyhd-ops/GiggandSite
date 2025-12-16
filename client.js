@@ -492,33 +492,54 @@ function initGame() {
     updateScores();
 }
 
-// Update board background image
+// Update board background image with coordinate mapping
 function updateBoardBackground() {
     const board = document.getElementById('board');
     if (board) {
-        // Preload image to check if it exists
+        // Preload image to check if it exists and get dimensions
         const img = new Image();
         img.onload = () => {
             console.log('Background image loaded:', currentBackgroundImage);
+            const imgWidth = img.width;
+            const imgHeight = img.height;
+            
+            // Coordinates from user: P1(401,133), P2(135,336), P3(395,345), P4(159,141)
+            // Convert to percentages based on image dimensions
+            const p1x = (401 / imgWidth) * 100;
+            const p1y = (133 / imgHeight) * 100;
+            const p2x = (135 / imgWidth) * 100;
+            const p2y = (336 / imgHeight) * 100;
+            const p3x = (395 / imgWidth) * 100;
+            const p3y = (345 / imgHeight) * 100;
+            const p4x = (159 / imgWidth) * 100;
+            const p4y = (141 / imgHeight) * 100;
+            
+            // Create clip-path polygon from coordinates (top-left, top-right, bottom-right, bottom-left)
+            const clipPath = `polygon(${p4x}% ${p4y}%, ${p1x}% ${p1y}%, ${p3x}% ${p3y}%, ${p2x}% ${p2y}%)`;
+            
             // Directly set the background image on the board element
             const style = document.createElement('style');
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center 30% !important;
-                    background-size: contain !important;
+                    background-position: 0% 0% !important;
+                    background-size: ${imgWidth}px ${imgHeight}px !important;
                     opacity: 1 !important;
-                    -webkit-background-size: contain !important;
-                    -moz-background-size: contain !important;
-                    -o-background-size: contain !important;
+                    -webkit-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -moz-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -o-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    clip-path: ${clipPath} !important;
+                    -webkit-clip-path: ${clipPath} !important;
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center 30% !important;
-                    background-size: 120% 140% !important;
-                    -webkit-background-size: 120% 140% !important;
-                    -moz-background-size: 120% 140% !important;
-                    -o-background-size: 120% 140% !important;
+                    background-position: 0% 0% !important;
+                    background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -webkit-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -moz-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -o-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    clip-path: ${clipPath} !important;
+                    -webkit-clip-path: ${clipPath} !important;
                 }
             `;
             // Remove old style if exists
@@ -529,8 +550,10 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = 'center 30%';
-            board.style.backgroundSize = '120% 140%';
+            board.style.backgroundPosition = '0% 0%';
+            board.style.backgroundSize = `${imgWidth}px ${imgHeight}px`;
+            board.style.clipPath = clipPath;
+            board.style.webkitClipPath = clipPath;
         };
         img.onerror = () => {
             console.error('Failed to load background image:', currentBackgroundImage);
