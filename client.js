@@ -496,22 +496,33 @@ function initGame() {
 function updateBoardBackground() {
     const board = document.getElementById('board');
     if (board) {
-        // Directly set the background image on the board element
-        const style = document.createElement('style');
-        style.textContent = `
-            .board::before {
-                background-image: url('${currentBackgroundImage}') !important;
-            }
-        `;
-        // Remove old style if exists
-        const oldStyle = document.getElementById('board-bg-style');
-        if (oldStyle) oldStyle.remove();
-        style.id = 'board-bg-style';
-        document.head.appendChild(style);
-        
-        // Also set as inline style as fallback
-        board.style.setProperty('--bg-image', `url('${currentBackgroundImage}')`);
-        console.log('Board background updated to:', currentBackgroundImage);
+        // Preload image to check if it exists
+        const img = new Image();
+        img.onload = () => {
+            console.log('Background image loaded:', currentBackgroundImage);
+            // Directly set the background image on the board element
+            const style = document.createElement('style');
+            style.textContent = `
+                .board::before {
+                    background-image: url('${currentBackgroundImage}') !important;
+                    opacity: 1 !important;
+                }
+            `;
+            // Remove old style if exists
+            const oldStyle = document.getElementById('board-bg-style');
+            if (oldStyle) oldStyle.remove();
+            style.id = 'board-bg-style';
+            document.head.appendChild(style);
+        };
+        img.onerror = () => {
+            console.error('Failed to load background image:', currentBackgroundImage);
+            // Try fallback
+            const fallback = currentBackgroundImage === 'images/giggand1.png' ? 'images/giggand2.png' : 'images/giggand1.png';
+            console.log('Trying fallback:', fallback);
+            currentBackgroundImage = fallback;
+            img.src = fallback;
+        };
+        img.src = currentBackgroundImage;
     }
 }
 

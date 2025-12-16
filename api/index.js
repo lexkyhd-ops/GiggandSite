@@ -36,8 +36,11 @@ const staticOptions = {
     }
 };
 
-// Serve static files first
+// Serve static files first (including images)
 app.use(express.static(path.join(__dirname, '..'), staticOptions));
+
+// Explicitly serve images directory
+app.use('/images', express.static(path.join(__dirname, '..', 'images')));
 
 // Explicit routes for static files to ensure correct MIME types
 app.get('/style.css', (req, res) => {
