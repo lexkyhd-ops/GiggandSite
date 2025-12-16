@@ -75,3 +75,5 @@
 {"location":"client.js:67","message":"Socket connected","data":{"transport":"polling","connected":true},"timestamp":1765925837868,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
 {"location":"client.js:67","message":"Socket connected","data":{"transport":"polling","connected":true},"timestamp":1765925970788,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
 {"location":"client.js:67","message":"Socket connected","data":{"transport":"polling","connected":true},"timestamp":1765926097488,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
+{"location":"client.js:67","message":"Socket connected","data":{"transport":"polling","connected":true},"timestamp":1765926169857,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}
+{"location":"client.js:67","message":"Socket connected","data":{"transport":"polling","connected":true},"timestamp":1765926216604,"sessionId":"debug-session","runId":"run1","hypothesisId":"A"}

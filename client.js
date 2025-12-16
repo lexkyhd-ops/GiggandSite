@@ -314,13 +314,19 @@ function updateBoard(board) {
     cells.forEach((cell, index) => {
         const value = board[index];
         cell.textContent = value;
-        cell.classList.remove('x', 'o', 'filled');
+        // Remove all classes that might affect interaction
+        cell.classList.remove('x', 'o', 'filled', 'disabled');
         if (value === 'X') {
             cell.classList.add('x', 'filled');
         } else if (value === 'O') {
             cell.classList.add('o', 'filled');
         }
     });
+    // After updating board, update turn state to enable/disable correctly
+    if (gameStatus === 'playing' && currentPlayer) {
+        // Turn state will be updated by updateTurn, but ensure board is in correct state
+        // This will be handled by updateTurn being called after updateBoard
+    }
 }
 
 function updateTurn(currentTurn) {
@@ -348,10 +354,16 @@ function updateTurn(currentTurn) {
         turnMessage.textContent = 'Warte auf Spielstart...';
     }
     
-    if (!isMyTurn) {
-        disableBoard();
+    // Enable/disable board based on turn
+    if (gameStatus === 'playing') {
+        if (!isMyTurn) {
+            disableBoard();
+        } else {
+            enableBoard();
+        }
     } else {
-        enableBoard();
+        // If game is not playing, disable board
+        disableBoard();
     }
 }
 
@@ -389,6 +401,7 @@ function checkGameStatus(data) {
 
 function disableBoard() {
     cells.forEach(cell => {
+        // Only disable cells that are not filled
         if (!cell.classList.contains('filled')) {
             cell.classList.add('disabled');
         }
@@ -397,7 +410,10 @@ function disableBoard() {
 
 function enableBoard() {
     cells.forEach(cell => {
-        cell.classList.remove('disabled');
+        // Only enable cells that are not filled
+        if (!cell.classList.contains('filled')) {
+            cell.classList.remove('disabled');
+        }
     });
 }
 
