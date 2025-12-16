@@ -16,6 +16,7 @@ let currentPlayer = null;
 let isMyTurn = false;
 let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let gameStatus = 'waiting'; // waiting, playing, finished
+let playerScores = { X: 0, O: 0 }; // Track wins for each player
 
 // DOM Elements
 const lobbyScreen = document.getElementById('lobby');
@@ -200,6 +201,12 @@ socket.on('gameOver', (data) => {
     updateBoard(data.board);
     isMyTurn = false;
     
+    // Update scores
+    if (data.winner && data.winner !== 'draw') {
+        playerScores[data.winner] = (playerScores[data.winner] || 0) + 1;
+        updateScores();
+    }
+    
     if (data.winner === currentPlayer) {
         updateMessage(gameMessage, '🎉 Du hast gewonnen!', 'success');
     } else if (data.winner === 'draw') {
@@ -219,7 +226,7 @@ socket.on('playerLeft', () => {
 });
 
 socket.on('gameReset', () => {
-    // Reset board state but keep currentPlayer - it will be set again in gameStart
+    // Reset board state but keep currentPlayer and scores - it will be set again in gameStart
     gameBoard = ['', '', '', '', '', '', '', '', ''];
     isMyTurn = false;
     gameStatus = 'waiting'; // Will be set to 'playing' in gameStart
@@ -228,6 +235,7 @@ socket.on('gameReset', () => {
     enableBoard(); // Re-enable board for new game
     updateMessage(gameMessage, 'Neues Spiel wird gestartet...', 'info');
     // gameStart event will follow and set everything correctly
+    // Scores are preserved across games
 });
 
 socket.on('disconnect', () => {
@@ -379,6 +387,21 @@ function updatePlayers(players, yourIndex) {
         const name2 = players[1].name || 'Spieler 2';
         player2El.querySelector('.player-name').textContent = yourIndex === 1 ? `${name2} (Du)` : name2;
     }
+    
+    // Update scores display
+    updateScores();
+}
+
+function updateScores() {
+    const player1ScoreEl = document.getElementById('player1Score');
+    const player2ScoreEl = document.getElementById('player2Score');
+    
+    if (player1ScoreEl) {
+        player1ScoreEl.textContent = playerScores.X || 0;
+    }
+    if (player2ScoreEl) {
+        player2ScoreEl.textContent = playerScores.O || 0;
+    }
 }
 
 function checkGameStatus(data) {
@@ -443,8 +466,10 @@ function initGame() {
     isMyTurn = false;
     gameStatus = 'waiting';
     roomCode = '';
+    playerScores = { X: 0, O: 0 }; // Reset scores when leaving game
     updateBoard(gameBoard);
     resetGameBtn.style.display = 'none';
+    updateScores();
 }
 
 // Initialize on page load
