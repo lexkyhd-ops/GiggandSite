@@ -13,14 +13,43 @@ const io = socketIo(server, {
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
-    }
+    },
+    path: '/socket.io/'
 });
 
-// Serve static files
-app.use(express.static(path.join(__dirname, '..')));
+// Serve static files with proper MIME types - MUST be before other routes
+const staticOptions = {
+    setHeaders: (res, filePath) => {
+        const ext = path.extname(filePath).toLowerCase();
+        if (ext === '.css') {
+            res.setHeader('Content-Type', 'text/css; charset=utf-8');
+        } else if (ext === '.js') {
+            res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+        } else if (ext === '.html') {
+            res.setHeader('Content-Type', 'text/html; charset=utf-8');
+        }
+    }
+};
+
+// Serve static files first
+app.use(express.static(path.join(__dirname, '..'), staticOptions));
+
+// Explicit routes for static files to ensure correct MIME types
+app.get('/style.css', (req, res) => {
+    res.setHeader('Content-Type', 'text/css; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.sendFile(path.join(__dirname, '..', 'style.css'));
+});
+
+app.get('/client.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    res.sendFile(path.join(__dirname, '..', 'client.js'));
+});
 
 // Root route - serve index.html
 app.get('/', (req, res) => {
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
