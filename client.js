@@ -163,6 +163,12 @@ socket.on('gameStart', (data) => {
         return;
     }
     
+    // Update scores from server (synchronized)
+    if (data.scores) {
+        playerScores = { ...data.scores };
+        updateScores();
+    }
+    
     updatePlayers(data.players, data.yourPlayerIndex);
     gameStatus = 'playing';
     showScreen('game');
@@ -201,11 +207,14 @@ socket.on('gameOver', (data) => {
     updateBoard(data.board);
     isMyTurn = false;
     
-    // Update scores
-    if (data.winner && data.winner !== 'draw') {
+    // Update scores from server (synchronized)
+    if (data.scores) {
+        playerScores = { ...data.scores };
+    } else if (data.winner && data.winner !== 'draw') {
+        // Fallback: update locally if server doesn't send scores
         playerScores[data.winner] = (playerScores[data.winner] || 0) + 1;
-        updateScores();
     }
+    updateScores();
     
     if (data.winner === currentPlayer) {
         updateMessage(gameMessage, '🎉 Du hast gewonnen!', 'success');

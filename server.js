@@ -104,7 +104,8 @@ io.on('connection', (socket) => {
                         players: room.players,
                         currentTurn: room.currentTurn,
                         yourSymbol: player.symbol,
-                        yourPlayerIndex: index
+                        yourPlayerIndex: index,
+                        scores: room.scores // Send current scores
                     });
                 });
             }, 1000);
@@ -131,9 +132,14 @@ io.on('connection', (socket) => {
         
         if (winner) {
             room.status = 'finished';
+            // Update scores
+            if (winner !== 'draw') {
+                room.scores[winner] = (room.scores[winner] || 0) + 1;
+            }
             io.to(roomCode).emit('gameOver', {
                 board: room.board,
-                winner: winner
+                winner: winner,
+                scores: room.scores // Send updated scores
             });
         } else {
             // Switch turn
@@ -163,7 +169,8 @@ io.on('connection', (socket) => {
                 players: room.players,
                 currentTurn: room.currentTurn,
                 yourSymbol: player.symbol,
-                yourPlayerIndex: index
+                yourPlayerIndex: index,
+                scores: room.scores // Send current scores
             });
         });
     });
