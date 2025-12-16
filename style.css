@@ -311,12 +311,11 @@ header h1 {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Transform board to match image coordinates */
     /* P1: (401, 133) top-right, P2: (135, 336) bottom-left, P3: (395, 345) bottom-right, P4: (159, 141) top-left */
-    /* Using clip-path to map the board to these coordinates */
-    clip-path: polygon(39.75% 33.25%, 33.75% 33.25%, 33.75% 84%, 98.75% 84%, 98.75% 36.25%, 39.75% 33.25%);
+    /* Clip-path will be set dynamically via JavaScript based on actual image dimensions */
     /* Fallback background for mobile */
     background-image: url('images/giggand2.png');
-    background-size: 100% 100%; /* Full image size */
-    background-position: 0% 0%; /* Top left origin */
+    background-size: cover; /* Will be overridden by JavaScript */
+    background-position: center; /* Will be overridden by JavaScript */
     background-repeat: no-repeat;
 }
 
@@ -331,21 +330,19 @@ header h1 {
     width: 100%;
     height: 100%;
     background-image: url('images/giggand2.png');
-    /* Image dimensions assumed to be around 500x400 based on coordinates */
+    /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
-    /* Scale and position to match these coordinates */
-    background-size: 500px 400px; /* Adjust based on actual image size */
-    background-position: 0% 0%; /* Top left origin */
+    background-size: cover; /* Will be overridden by JavaScript */
+    background-position: center; /* Will be overridden by JavaScript */
     background-repeat: no-repeat;
     opacity: 1;
     z-index: 0;
     border-radius: 7px;
     /* Ensure image loads on mobile */
-    -webkit-background-size: 500px 400px;
-    -moz-background-size: 500px 400px;
-    -o-background-size: 500px 400px;
-    /* Transform to match the trapezoid shape */
-    clip-path: polygon(39.75% 33.25%, 33.75% 33.25%, 33.75% 84%, 98.75% 84%, 98.75% 36.25%, 39.75% 33.25%);
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    /* Clip-path will be set dynamically */
 }
 
 /* Ensure cells are above the background */

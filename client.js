@@ -502,19 +502,50 @@ function updateBoardBackground() {
             console.log('Background image loaded:', currentBackgroundImage);
             const imgWidth = img.width;
             const imgHeight = img.height;
+            console.log('Image dimensions:', imgWidth, 'x', imgHeight);
             
             // Coordinates from user: P1(401,133), P2(135,336), P3(395,345), P4(159,141)
-            // Convert to percentages based on image dimensions
-            const p1x = (401 / imgWidth) * 100;
-            const p1y = (133 / imgHeight) * 100;
-            const p2x = (135 / imgWidth) * 100;
-            const p2y = (336 / imgHeight) * 100;
-            const p3x = (395 / imgWidth) * 100;
-            const p3y = (345 / imgHeight) * 100;
-            const p4x = (159 / imgWidth) * 100;
-            const p4y = (141 / imgHeight) * 100;
+            // Get board dimensions
+            const boardRect = board.getBoundingClientRect();
+            const boardWidth = boardRect.width;
+            const boardHeight = boardRect.height;
+            console.log('Board dimensions:', boardWidth, 'x', boardHeight);
             
-            // Create clip-path polygon from coordinates (top-left, top-right, bottom-right, bottom-left)
+            // Calculate scale factor to fit image coordinates to board
+            // Find the bounding box of the coordinates
+            const minX = Math.min(159, 401, 135, 395);
+            const maxX = Math.max(159, 401, 135, 395);
+            const minY = Math.min(141, 133, 336, 345);
+            const maxY = Math.max(141, 133, 336, 345);
+            const coordWidth = maxX - minX;
+            const coordHeight = maxY - minY;
+            
+            // Scale image so coordinates match board size
+            const scaleX = boardWidth / coordWidth;
+            const scaleY = boardHeight / coordHeight;
+            const scale = Math.max(scaleX, scaleY) * 1.1; // Add 10% padding to ensure coverage
+            
+            const scaledImgWidth = imgWidth * scale;
+            const scaledImgHeight = imgHeight * scale;
+            
+            // Calculate offset to position coordinates correctly
+            // We want P4 (159, 141) to be at top-left of board
+            const offsetX = -minX * scale;
+            const offsetY = -minY * scale;
+            
+            // Convert coordinates to percentages relative to scaled image
+            const p1x = ((401 * scale + offsetX) / boardWidth) * 100;
+            const p1y = ((133 * scale + offsetY) / boardHeight) * 100;
+            const p2x = ((135 * scale + offsetX) / boardWidth) * 100;
+            const p2y = ((336 * scale + offsetY) / boardHeight) * 100;
+            const p3x = ((395 * scale + offsetX) / boardWidth) * 100;
+            const p3y = ((345 * scale + offsetY) / boardHeight) * 100;
+            const p4x = ((159 * scale + offsetX) / boardWidth) * 100;
+            const p4y = ((141 * scale + offsetY) / boardHeight) * 100;
+            
+            console.log('Calculated clip-path coordinates:', {p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y});
+            
+            // Create clip-path polygon from coordinates (top-left P4, top-right P1, bottom-right P3, bottom-left P2)
             const clipPath = `polygon(${p4x}% ${p4y}%, ${p1x}% ${p1y}%, ${p3x}% ${p3y}%, ${p2x}% ${p2y}%)`;
             
             // Directly set the background image on the board element
@@ -522,22 +553,22 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: 0% 0% !important;
-                    background-size: ${imgWidth}px ${imgHeight}px !important;
+                    background-position: ${offsetX}px ${offsetY}px !important;
+                    background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     opacity: 1 !important;
-                    -webkit-background-size: ${imgWidth}px ${imgHeight}px !important;
-                    -moz-background-size: ${imgWidth}px ${imgHeight}px !important;
-                    -o-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     clip-path: ${clipPath} !important;
                     -webkit-clip-path: ${clipPath} !important;
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: 0% 0% !important;
-                    background-size: ${imgWidth}px ${imgHeight}px !important;
-                    -webkit-background-size: ${imgWidth}px ${imgHeight}px !important;
-                    -moz-background-size: ${imgWidth}px ${imgHeight}px !important;
-                    -o-background-size: ${imgWidth}px ${imgHeight}px !important;
+                    background-position: ${offsetX}px ${offsetY}px !important;
+                    background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     clip-path: ${clipPath} !important;
                     -webkit-clip-path: ${clipPath} !important;
                 }
@@ -550,8 +581,8 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = '0% 0%';
-            board.style.backgroundSize = `${imgWidth}px ${imgHeight}px`;
+            board.style.backgroundPosition = `${offsetX}px ${offsetY}px`;
+            board.style.backgroundSize = `${scaledImgWidth}px ${scaledImgHeight}px`;
             board.style.clipPath = clipPath;
             board.style.webkitClipPath = clipPath;
         };
