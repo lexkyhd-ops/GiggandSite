@@ -1,6 +1,6 @@
 {
   "name": "multiplayer-tictactoe",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Multiplayer TicTacToe Website mit Echtzeit-Multiplayer",
   "main": "server.js",
   "scripts": {

@@ -505,7 +505,12 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
+                    background-position: center top !important;
+                    background-size: cover !important;
                     opacity: 1 !important;
+                    -webkit-background-size: cover !important;
+                    -moz-background-size: cover !important;
+                    -o-background-size: cover !important;
                 }
             `;
             // Remove old style if exists
@@ -513,6 +518,11 @@ function updateBoardBackground() {
             if (oldStyle) oldStyle.remove();
             style.id = 'board-bg-style';
             document.head.appendChild(style);
+            
+            // Also set directly on element for mobile compatibility
+            board.style.backgroundImage = `url('${currentBackgroundImage}')`;
+            board.style.backgroundPosition = 'center top';
+            board.style.backgroundSize = 'cover';
         };
         img.onerror = () => {
             console.error('Failed to load background image:', currentBackgroundImage);
@@ -540,7 +550,7 @@ window.addEventListener('load', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.1.0';
+        versionEl.textContent = '1.2.0';
     }
 });
 
