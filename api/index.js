@@ -84,8 +84,46 @@ app.get('/socket.io/socket.io.js', (req, res) => {
     }
 });
 
+// Socket.io middleware - MUST be before root route
+// This handles all Socket.io requests (polling, etc.)
+app.use('/socket.io', (req, res, next) => {
+    // #region agent log
+    const fs = require('fs');
+    const logPath = path.join(__dirname, '..', '.cursor', 'debug.log');
+    const logEntry = JSON.stringify({
+        location: 'api/index.js:root',
+        message: 'Socket.io request received',
+        data: { method: req.method, url: req.url, path: req.path },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        runId: 'run3',
+        hypothesisId: 'F'
+    }) + '\n';
+    try { fs.appendFileSync(logPath, logEntry); } catch(e) {}
+    // #endregion
+    
+    // Let Socket.io handle the request
+    // The server instance will handle Socket.io requests
+    next();
+});
+
 // Root route - serve index.html
 app.get('/', (req, res) => {
+    // #region agent log
+    const fs = require('fs');
+    const logPath = path.join(__dirname, '..', '.cursor', 'debug.log');
+    const logEntry = JSON.stringify({
+        location: 'api/index.js:root',
+        message: 'Root route accessed',
+        data: { method: req.method, url: req.url },
+        timestamp: Date.now(),
+        sessionId: 'debug-session',
+        runId: 'run3',
+        hypothesisId: 'G'
+    }) + '\n';
+    try { fs.appendFileSync(logPath, logEntry); } catch(e) {}
+    // #endregion
+    
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
     res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
@@ -299,5 +337,7 @@ io.on('connection', (socket) => {
 });
 
 // Export for Vercel
+// Vercel Serverless Functions work differently - we need to export the app
+// Socket.io should work through the Express app
 module.exports = app;
 
