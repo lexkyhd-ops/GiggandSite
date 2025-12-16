@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Multiplayer TicTacToe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🎮 Multiplayer TicTacToe</h1>
+        </header>
+
+        <!-- Lobby Screen -->
+        <div id="lobby" class="screen active">
+            <div class="lobby-content">
+                <h2>Spiel beitreten</h2>
+                <div class="input-group">
+                    <input type="text" id="playerName" placeholder="Dein Name" maxlength="20">
+                </div>
+                <div class="button-group">
+                    <button id="createRoomBtn" class="btn btn-primary">Neues Spiel erstellen</button>
+                    <button id="joinRoomBtn" class="btn btn-secondary">Spiel beitreten</button>
+                </div>
+                <div id="roomCodeGroup" class="input-group" style="display: none;">
+                    <input type="text" id="roomCode" placeholder="Raum-Code eingeben" maxlength="6">
+                    <button id="joinBtn" class="btn btn-primary">Beitreten</button>
+                </div>
+                <div id="lobbyMessage" class="message"></div>
+            </div>
+        </div>
+
+        <!-- Waiting Screen -->
+        <div id="waiting" class="screen">
+            <div class="waiting-content">
+                <h2>Warte auf Gegner...</h2>
+                <div class="room-info">
+                    <p>Raum-Code: <strong id="displayRoomCode"></strong></p>
+                    <p>Spieler: <span id="playerCount">1/2</span></p>
+                </div>
+                <div class="spinner"></div>
+                <button id="cancelWaitBtn" class="btn btn-secondary">Abbrechen</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="game" class="screen">
+            <div class="game-header">
+                <div class="room-code-display">Raum: <span id="gameRoomCode"></span></div>
+                <button id="leaveGameBtn" class="btn btn-small">Spiel verlassen</button>
+            </div>
+            
+            <div class="game-info">
+                <div class="player-info">
+                    <div class="player" id="player1">
+                        <span class="player-name">Spieler 1</span>
+                        <span class="player-symbol">X</span>
+                    </div>
+                    <div class="vs">VS</div>
+                    <div class="player" id="player2">
+                        <span class="player-name">Spieler 2</span>
+                        <span class="player-symbol">O</span>
+                    </div>
+                </div>
+                <div class="turn-indicator">
+                    <p id="turnMessage">Warte auf Spielstart...</p>
+                </div>
+            </div>
+
+            <div class="board-container">
+                <div id="board" class="board">
+                    <div class="cell" data-index="0"></div>
+                    <div class="cell" data-index="1"></div>
+                    <div class="cell" data-index="2"></div>
+                    <div class="cell" data-index="3"></div>
+                    <div class="cell" data-index="4"></div>
+                    <div class="cell" data-index="5"></div>
+                    <div class="cell" data-index="6"></div>
+                    <div class="cell" data-index="7"></div>
+                    <div class="cell" data-index="8"></div>
+                </div>
+            </div>
+
+            <div id="gameMessage" class="message"></div>
+
+            <div class="game-actions">
+                <button id="resetGameBtn" class="btn btn-secondary" style="display: none;">Neues Spiel</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="client.js"></script>
+</body>
+</html>
+
