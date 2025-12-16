@@ -211,7 +211,11 @@ socket.on('playerLeft', () => {
 });
 
 socket.on('gameReset', () => {
-    initGame();
+    // Don't reset currentPlayer here - it will be set again in gameStart
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    isMyTurn = false;
+    updateBoard(gameBoard);
+    resetGameBtn.style.display = 'none';
     updateMessage(gameMessage, 'Neues Spiel gestartet!', 'success');
     setTimeout(() => {
         gameMessage.textContent = '';
