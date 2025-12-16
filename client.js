@@ -1,35 +1,14 @@
 // Initialize socket with better error handling
-// Use polling ONLY for Vercel compatibility (WebSockets don't work on Vercel Serverless)
+// Render supports WebSockets, so we can use both transports
 const socket = io({
-    transports: ['polling'], // Only polling - no WebSocket
-    upgrade: false, // Disable upgrade to prevent WebSocket attempts
-    rememberUpgrade: false, // Don't remember upgrade attempts
+    transports: ['websocket', 'polling'], // WebSocket first, fallback to polling
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionAttempts: 5,
     timeout: 20000,
-    forceNew: false,
-    // Force polling by disabling WebSocket detection
-    withCredentials: false
+    forceNew: false
 });
 
-// #region agent log
-fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:16',message:'Socket.io initialized',data:{transports:['polling'],upgrade:false,rememberUpgrade:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
-// #endregion
-
-// Prevent any WebSocket upgrade attempts
-if (socket.io && socket.io.engine) {
-    socket.io.engine.on('upgrade', () => {
-        console.warn('Upgrade attempt blocked');
-        // #region agent log
-        fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:25',message:'Upgrade attempt blocked',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
-        // #endregion
-    });
-}
-
-// #region agent log
-fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:11',message:'Socket.io initialized',data:{transports:['polling'],upgrade:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-// #endregion
 
 let playerName = '';
 let roomCode = '';
@@ -92,9 +71,6 @@ socket.on('connect', () => {
     const transport = socket.io.engine?.transport?.name || 'unknown';
     console.log('Transport:', transport);
     
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:67',message:'Socket connected',data:{transport:transport,connected:socket.connected},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
-    // #endregion
     
     if (transport === 'polling') {
         updateMessage(lobbyMessage, 'Mit Server verbunden (Polling-Modus)!', 'success');
@@ -112,9 +88,6 @@ socket.on('connect_error', (error) => {
     console.error('Connection error:', error);
     const transport = socket.io.engine?.transport?.name || 'unknown';
     
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:75',message:'Connection error',data:{error:error.message,transport:transport,type:error.type},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'B'})}).catch(()=>{});
-    // #endregion
     
     updateMessage(lobbyMessage, 'Verbindungsfehler! Versuche erneut...', 'error');
     // Auto-retry after 3 seconds
@@ -128,9 +101,6 @@ socket.on('connect_error', (error) => {
 socket.on('reconnect_attempt', () => {
     console.log('Reconnection attempt...');
     
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:87',message:'Reconnection attempt',data:{attemptNumber:socket.io.reconnecting},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
     
     updateMessage(lobbyMessage, 'Verbindung wird wiederhergestellt...', 'info');
 });
@@ -139,9 +109,6 @@ socket.on('reconnect', () => {
     console.log('Reconnected!');
     const transport = socket.io.engine?.transport?.name || 'unknown';
     
-    // #region agent log
-    fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:95',message:'Reconnected',data:{transport:transport},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'C'})}).catch(()=>{});
-    // #endregion
     
     updateMessage(lobbyMessage, 'Verbindung wiederhergestellt!', 'success');
     setTimeout(() => {

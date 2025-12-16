@@ -34,21 +34,44 @@ npm run dev
 
 Der Server läuft standardmäßig auf `http://localhost:3000`
 
-## Deployment auf Vercel
+## Deployment auf Render
 
-**WICHTIG:** Socket.io mit WebSockets funktioniert auf Vercel nur eingeschränkt, da Vercel Serverless Functions keine persistenten WebSocket-Verbindungen unterstützen.
+**Empfohlen:** Render unterstützt WebSockets vollständig und ist perfekt für diese Multiplayer-App!
 
-Für ein vollständiges Multiplayer-Erlebnis empfehlen wir:
+### Render Deployment (Empfohlen)
+
+1. **Erstelle ein Render-Konto:**
+   - Gehe zu https://render.com
+   - Melde dich mit GitHub an
+
+2. **Erstelle einen neuen Web Service:**
+   - Klicke auf "New +" → "Web Service"
+   - Verbinde dein GitHub-Repository
+   - Render erkennt automatisch die `render.yaml` Konfiguration
+
+3. **Konfiguration:**
+   - **Name:** multiplayer-tictactoe (oder dein gewünschter Name)
+   - **Environment:** Node
+   - **Build Command:** `npm install`
+   - **Start Command:** `npm start`
+   - **Plan:** Free (kostenloser Plan verfügbar)
+
+4. **Deploy:**
+   - Klicke auf "Create Web Service"
+   - Render baut und deployed automatisch
+   - Nach dem Deployment erhältst du eine URL wie: `https://multiplayer-tictactoe.onrender.com`
+
+5. **Fertig!** 🎉
+   - Die App ist jetzt live mit vollständiger WebSocket-Unterstützung
+   - Du kannst sofort Multiplayer-Spiele spielen
+
+### Alternative Deployment-Optionen
+
 - **Railway** (https://railway.app) - Unterstützt WebSockets
-- **Render** (https://render.com) - Unterstützt WebSockets
 - **Heroku** (https://heroku.com) - Unterstützt WebSockets
 - **DigitalOcean App Platform** - Unterstützt WebSockets
 
-Falls du trotzdem auf Vercel deployen möchtest:
-1. Pushe den Code zu GitHub
-2. Verbinde dein Repository mit Vercel
-3. Vercel erkennt automatisch die `vercel.json` und `api/index.js`
-4. **Hinweis:** WebSocket-Funktionalität wird möglicherweise nicht vollständig funktionieren
+**Hinweis:** Vercel wird nicht empfohlen, da Serverless Functions keine persistenten WebSocket-Verbindungen unterstützen.
 
 ## Verwendung
 

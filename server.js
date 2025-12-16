@@ -5,9 +5,16 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
 
 const PORT = process.env.PORT || 3000;
+
+// Configure Socket.io for Render (supports WebSockets)
+const io = socketIo(server, {
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
+});
 
 // Serve static files
 app.use(express.static(path.join(__dirname)));
@@ -91,9 +98,14 @@ io.on('connection', (socket) => {
         if (room.players.length === 2) {
             room.status = 'playing';
             setTimeout(() => {
-                io.to(roomCode).emit('gameStart', {
-                    players: room.players,
-                    currentTurn: room.currentTurn
+                // Send gameStart to each player with their own symbol
+                room.players.forEach((player, index) => {
+                    io.to(player.id).emit('gameStart', {
+                        players: room.players,
+                        currentTurn: room.currentTurn,
+                        yourSymbol: player.symbol,
+                        yourPlayerIndex: index
+                    });
                 });
             }, 1000);
         }
@@ -145,9 +157,14 @@ io.on('connection', (socket) => {
         room.status = 'playing';
         
         io.to(roomCode).emit('gameReset');
-        io.to(roomCode).emit('gameStart', {
-            players: room.players,
-            currentTurn: room.currentTurn
+        // Send gameStart to each player with their own symbol
+        room.players.forEach((player, index) => {
+            io.to(player.id).emit('gameStart', {
+                players: room.players,
+                currentTurn: room.currentTurn,
+                yourSymbol: player.symbol,
+                yourPlayerIndex: index
+            });
         });
     });
 
@@ -198,14 +215,13 @@ io.on('connection', (socket) => {
     });
 });
 
-// Export for Vercel
-if (process.env.VERCEL) {
-    module.exports = app;
-} else {
-    // Local development
-    server.listen(PORT, () => {
-        console.log(`Server läuft auf Port ${PORT}`);
+// Start server (works for both local development and Render)
+server.listen(PORT, '0.0.0.0', () => {
+    console.log(`Server läuft auf Port ${PORT}`);
+    if (process.env.RENDER) {
+        console.log(`Deployed on Render`);
+    } else {
         console.log(`Öffne http://localhost:${PORT} im Browser`);
-    });
-}
+    }
+});
 
