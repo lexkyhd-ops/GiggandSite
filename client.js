@@ -578,7 +578,7 @@ function updateBoardBackground() {
             const clipPath = `polygon(${p4x}% ${p4y}%, ${p1x}% ${p1y}%, ${p3x}% ${p3y}%, ${p2x}% ${p2y}%)`;
             
             // Directly set the background image on the board element
-            // Use contain to show full image, don't clip the board itself
+            // Show full image without clipping - the board border will contain it
             const style = document.createElement('style');
             style.textContent = `
                 .board::before {
@@ -589,7 +589,9 @@ function updateBoardBackground() {
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
-                    /* Don't clip the background - show full image */
+                    /* Show full image - no clipping */
+                    clip-path: none !important;
+                    -webkit-clip-path: none !important;
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
@@ -598,12 +600,9 @@ function updateBoardBackground() {
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
-                    /* Apply clip-path only to the board cells area, not the background */
-                }
-                /* Create overlay cells that match the coordinate area */
-                .board > .cell {
-                    position: relative;
-                    z-index: 2;
+                    /* Show full image - no clipping */
+                    clip-path: none !important;
+                    -webkit-clip-path: none !important;
                 }
             `;
             // Remove old style if exists
