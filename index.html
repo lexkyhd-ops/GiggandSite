@@ -90,7 +90,40 @@
         </div>
     </div>
 
-    <script src="/socket.io/socket.io.js"></script>
+    <!-- Use CDN Socket.io for better control -->
+    <script src="https://cdn.socket.io/4.6.1/socket.io.min.js"></script>
+    <script>
+        // Override WebSocket to prevent Socket.io WebSocket attempts on Vercel
+        // Only block WebSocket for socket.io URLs
+        const OriginalWebSocket = window.WebSocket;
+        window.WebSocket = function(url, protocols) {
+            // Block WebSocket for socket.io connections only
+            if (url && (url.includes('/socket.io/') || url.includes('socket.io'))) {
+                console.warn('WebSocket blocked for Socket.io (Vercel compatibility - using polling)');
+                // Return a mock that fails immediately to force fallback to polling
+                const mock = {
+                    readyState: 3, // CLOSED
+                    close: () => {},
+                    send: () => {},
+                    addEventListener: () => {},
+                    removeEventListener: () => {},
+                    CONNECTING: 0,
+                    OPEN: 1,
+                    CLOSING: 2,
+                    CLOSED: 3
+                };
+                setTimeout(() => {
+                    if (mock.onerror) {
+                        const error = new Error('WebSocket not supported on Vercel - using polling');
+                        mock.onerror({ error: error, message: error.message });
+                    }
+                }, 0);
+                return mock;
+            }
+            // Allow other WebSocket connections
+            return new OriginalWebSocket(url, protocols);
+        };
+    </script>
     <script src="client.js"></script>
     <script>
         // Fallback if socket.io fails to load

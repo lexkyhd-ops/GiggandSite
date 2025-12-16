@@ -1,14 +1,31 @@
 // Initialize socket with better error handling
-// Use polling first for Vercel compatibility (WebSockets don't work on Vercel Serverless)
+// Use polling ONLY for Vercel compatibility (WebSockets don't work on Vercel Serverless)
 const socket = io({
-    transports: ['polling'], // Only polling for Vercel - no WebSocket upgrade
+    transports: ['polling'], // Only polling - no WebSocket
     upgrade: false, // Disable upgrade to prevent WebSocket attempts
+    rememberUpgrade: false, // Don't remember upgrade attempts
     reconnection: true,
     reconnectionDelay: 1000,
     reconnectionAttempts: 5,
     timeout: 20000,
-    forceNew: false
+    forceNew: false,
+    // Force polling by disabling WebSocket detection
+    withCredentials: false
 });
+
+// #region agent log
+fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:16',message:'Socket.io initialized',data:{transports:['polling'],upgrade:false,rememberUpgrade:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
+// #endregion
+
+// Prevent any WebSocket upgrade attempts
+if (socket.io && socket.io.engine) {
+    socket.io.engine.on('upgrade', () => {
+        console.warn('Upgrade attempt blocked');
+        // #region agent log
+        fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:25',message:'Upgrade attempt blocked',data:{},timestamp:Date.now(),sessionId:'debug-session',runId:'run2',hypothesisId:'E'})}).catch(()=>{});
+        // #endregion
+    });
+}
 
 // #region agent log
 fetch('http://127.0.0.1:7244/ingest/60a28eea-8e5f-47ee-8b9c-3f957d3be995',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'client.js:11',message:'Socket.io initialized',data:{transports:['polling'],upgrade:false},timestamp:Date.now(),sessionId:'debug-session',runId:'run1',hypothesisId:'A'})}).catch(()=>{});
