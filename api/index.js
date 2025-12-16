@@ -5,16 +5,19 @@ const path = require('path');
 
 const app = express();
 const server = http.createServer(app);
-const io = socketIo(server);
 
-const PORT = process.env.PORT || 3000;
+// Configure Socket.io for Vercel
+const io = socketIo(server, {
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
+});
 
 // Serve static files
-app.use(express.static(path.join(__dirname)));
+app.use(express.static(path.join(__dirname, '..')));
 
 // Root route - serve index.html
 app.get('/', (req, res) => {
-    res.sendFile(path.join(__dirname, 'index.html'));
+    res.sendFile(path.join(__dirname, '..', 'index.html'));
 });
 
 // Game state
@@ -199,13 +202,5 @@ io.on('connection', (socket) => {
 });
 
 // Export for Vercel
-if (process.env.VERCEL) {
-    module.exports = app;
-} else {
-    // Local development
-    server.listen(PORT, () => {
-        console.log(`Server läuft auf Port ${PORT}`);
-        console.log(`Öffne http://localhost:${PORT} im Browser`);
-    });
-}
+module.exports = app;
 

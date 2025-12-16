@@ -34,6 +34,22 @@ npm run dev
 
 Der Server läuft standardmäßig auf `http://localhost:3000`
 
+## Deployment auf Vercel
+
+**WICHTIG:** Socket.io mit WebSockets funktioniert auf Vercel nur eingeschränkt, da Vercel Serverless Functions keine persistenten WebSocket-Verbindungen unterstützen.
+
+Für ein vollständiges Multiplayer-Erlebnis empfehlen wir:
+- **Railway** (https://railway.app) - Unterstützt WebSockets
+- **Render** (https://render.com) - Unterstützt WebSockets
+- **Heroku** (https://heroku.com) - Unterstützt WebSockets
+- **DigitalOcean App Platform** - Unterstützt WebSockets
+
+Falls du trotzdem auf Vercel deployen möchtest:
+1. Pushe den Code zu GitHub
+2. Verbinde dein Repository mit Vercel
+3. Vercel erkennt automatisch die `vercel.json` und `api/index.js`
+4. **Hinweis:** WebSocket-Funktionalität wird möglicherweise nicht vollständig funktionieren
+
 ## Verwendung
 
 1. Öffne `http://localhost:3000` im Browser
