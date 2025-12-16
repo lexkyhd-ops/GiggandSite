@@ -1,9 +1,13 @@
 // Initialize socket with better error handling
+// Use polling first for Vercel compatibility (WebSockets don't work on Vercel Serverless)
 const socket = io({
-    transports: ['websocket', 'polling'],
+    transports: ['polling', 'websocket'], // Polling first for Vercel
+    upgrade: true,
     reconnection: true,
     reconnectionDelay: 1000,
-    reconnectionAttempts: 5
+    reconnectionAttempts: 5,
+    timeout: 20000,
+    forceNew: false
 });
 
 let playerName = '';
@@ -64,15 +68,48 @@ cells.forEach(cell => {
 // Socket Events
 socket.on('connect', () => {
     console.log('Connected to server');
-    updateMessage(lobbyMessage, 'Mit Server verbunden!', 'success');
+    const transport = socket.io.engine.transport.name;
+    console.log('Transport:', transport);
+    
+    if (transport === 'polling') {
+        updateMessage(lobbyMessage, 'Mit Server verbunden (Polling-Modus)!', 'success');
+    } else {
+        updateMessage(lobbyMessage, 'Mit Server verbunden!', 'success');
+    }
+    
     setTimeout(() => {
         lobbyMessage.textContent = '';
         lobbyMessage.className = 'message';
     }, 2000);
 });
 
-socket.on('connect_error', () => {
-    updateMessage(lobbyMessage, 'Verbindungsfehler! Bitte Seite neu laden.', 'error');
+socket.on('connect_error', (error) => {
+    console.error('Connection error:', error);
+    updateMessage(lobbyMessage, 'Verbindungsfehler! Versuche erneut...', 'error');
+    // Auto-retry after 3 seconds
+    setTimeout(() => {
+        if (!socket.connected) {
+            socket.connect();
+        }
+    }, 3000);
+});
+
+socket.on('reconnect_attempt', () => {
+    console.log('Reconnection attempt...');
+    updateMessage(lobbyMessage, 'Verbindung wird wiederhergestellt...', 'info');
+});
+
+socket.on('reconnect', () => {
+    console.log('Reconnected!');
+    updateMessage(lobbyMessage, 'Verbindung wiederhergestellt!', 'success');
+    setTimeout(() => {
+        lobbyMessage.textContent = '';
+        lobbyMessage.className = 'message';
+    }, 2000);
+});
+
+socket.on('reconnect_failed', () => {
+    updateMessage(lobbyMessage, 'Verbindung fehlgeschlagen. Bitte Seite neu laden.', 'error');
 });
 
 socket.on('roomCreated', (data) => {

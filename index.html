@@ -96,9 +96,17 @@
         // Fallback if socket.io fails to load
         if (typeof io === 'undefined') {
             console.error('Socket.io failed to load');
-            document.getElementById('lobbyMessage').textContent = 'Fehler: Socket.io konnte nicht geladen werden. Bitte Seite neu laden.';
-            document.getElementById('lobbyMessage').className = 'message error';
+            const lobbyMsg = document.getElementById('lobbyMessage');
+            if (lobbyMsg) {
+                lobbyMsg.textContent = 'Fehler: Socket.io konnte nicht geladen werden. Bitte Seite neu laden.';
+                lobbyMsg.className = 'message error';
+            }
         }
+        
+        // Show connection status
+        window.addEventListener('load', () => {
+            console.log('Page loaded, Socket.io available:', typeof io !== 'undefined');
+        });
     </script>
 </body>
 </html>

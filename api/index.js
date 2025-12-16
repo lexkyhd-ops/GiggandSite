@@ -7,14 +7,18 @@ const app = express();
 const server = http.createServer(app);
 
 // Configure Socket.io for Vercel
+// Note: WebSockets don't work on Vercel Serverless Functions
+// We use polling as primary transport
 const io = socketIo(server, {
-    transports: ['websocket', 'polling'],
+    transports: ['polling', 'websocket'], // Polling first for Vercel compatibility
     allowEIO3: true,
     cors: {
         origin: "*",
         methods: ["GET", "POST"]
     },
-    path: '/socket.io/'
+    path: '/socket.io/',
+    pingTimeout: 60000,
+    pingInterval: 25000
 });
 
 // Serve static files with proper MIME types - MUST be before other routes
