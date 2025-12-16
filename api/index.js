@@ -47,6 +47,19 @@ app.get('/client.js', (req, res) => {
     res.sendFile(path.join(__dirname, '..', 'client.js'));
 });
 
+// Serve socket.io.js from node_modules
+app.get('/socket.io/socket.io.js', (req, res) => {
+    res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
+    res.setHeader('Cache-Control', 'public, max-age=3600');
+    const socketIoPath = path.join(__dirname, '..', 'node_modules', 'socket.io', 'client-dist', 'socket.io.js');
+    res.sendFile(socketIoPath, (err) => {
+        if (err) {
+            console.error('Error serving socket.io.js:', err);
+            res.status(404).send('Socket.io not found');
+        }
+    });
+});
+
 // Root route - serve index.html
 app.get('/', (req, res) => {
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
