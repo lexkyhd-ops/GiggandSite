@@ -175,7 +175,10 @@ socket.on('gameStart', (data) => {
     
     // Set random background image for the board
     currentBackgroundImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
-    updateBoardBackground();
+    // Small delay to ensure DOM is ready
+    setTimeout(() => {
+        updateBoardBackground();
+    }, 100);
     
     updatePlayers(data.players, data.yourPlayerIndex);
     gameStatus = 'playing';
@@ -493,12 +496,11 @@ function initGame() {
 function updateBoardBackground() {
     const board = document.getElementById('board');
     if (board) {
-        board.style.setProperty('--bg-image', `url('${currentBackgroundImage}')`);
-        // Update the ::before pseudo-element via CSS variable
+        // Directly set the background image on the board element
         const style = document.createElement('style');
         style.textContent = `
             .board::before {
-                background-image: var(--bg-image, url('${currentBackgroundImage}'));
+                background-image: url('${currentBackgroundImage}') !important;
             }
         `;
         // Remove old style if exists
@@ -506,9 +508,28 @@ function updateBoardBackground() {
         if (oldStyle) oldStyle.remove();
         style.id = 'board-bg-style';
         document.head.appendChild(style);
+        
+        // Also set as inline style as fallback
+        board.style.setProperty('--bg-image', `url('${currentBackgroundImage}')`);
+        console.log('Board background updated to:', currentBackgroundImage);
     }
 }
 
 // Initialize on page load
 initGame();
+
+// Set initial background image when page loads
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        updateBoardBackground();
+    }, 200);
+});
+
+// Update version display
+document.addEventListener('DOMContentLoaded', () => {
+    const versionEl = document.getElementById('version');
+    if (versionEl) {
+        versionEl.textContent = '1.1.0';
+    }
+});
 
