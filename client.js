@@ -153,11 +153,27 @@ socket.on('playerJoined', (data) => {
 });
 
 socket.on('gameStart', (data) => {
+    console.log('gameStart received:', data);
     currentPlayer = data.yourSymbol; // X or O
+    console.log('Game started - My symbol:', currentPlayer, 'Current turn:', data.currentTurn, 'Players:', data.players);
+    
+    if (!currentPlayer) {
+        console.error('ERROR: currentPlayer is not set!', data);
+        return;
+    }
+    
     updatePlayers(data.players, data.yourPlayerIndex);
     gameStatus = 'playing';
     showScreen('game');
-    updateTurn(data.currentTurn);
+    
+    // Update turn AFTER currentPlayer is set
+    if (data.currentTurn) {
+        updateTurn(data.currentTurn);
+    } else {
+        console.warn('No currentTurn in gameStart data');
+        turnMessage.textContent = 'Warte auf Spielstart...';
+    }
+    
     updateMessage(gameMessage, 'Spiel gestartet!', 'success');
     setTimeout(() => {
         gameMessage.textContent = '';
@@ -297,7 +313,14 @@ function updateBoard(board) {
 }
 
 function updateTurn(currentTurn) {
+    if (!currentPlayer) {
+        console.warn('updateTurn called but currentPlayer is not set');
+        return;
+    }
+    
     isMyTurn = currentTurn === currentPlayer;
+    console.log('Update turn - Current turn:', currentTurn, 'My symbol:', currentPlayer, 'Is my turn:', isMyTurn);
+    
     const player1El = document.getElementById('player1');
     const player2El = document.getElementById('player2');
     
@@ -307,9 +330,11 @@ function updateTurn(currentTurn) {
     if (currentTurn === 'X') {
         player1El.classList.add('active');
         turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
-    } else {
+    } else if (currentTurn === 'O') {
         player2El.classList.add('active');
         turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
+    } else {
+        turnMessage.textContent = 'Warte auf Spielstart...';
     }
     
     if (!isMyTurn) {
