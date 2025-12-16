@@ -291,10 +291,35 @@ header h1 {
     width: 100%;
     max-width: 400px;
     aspect-ratio: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background image for the board */
+.board::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: var(--bg-image, url('images/giggand1.png'));
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    opacity: 0.4;
+    z-index: 0;
+    border-radius: 10px;
+}
+
+/* Ensure cells are above the background */
+.board > .cell {
+    position: relative;
+    z-index: 1;
 }
 
 .cell {
-    background: white;
+    background: rgba(255, 255, 255, 0.95);
     border-radius: 8px;
     display: flex;
     justify-content: center;
@@ -304,6 +329,8 @@ header h1 {
     cursor: pointer;
     transition: all 0.2s;
     user-select: none;
+    backdrop-filter: blur(2px);
+    border: 2px solid rgba(255, 255, 255, 0.8);
 }
 
 .cell:hover:not(.disabled):not(.filled) {

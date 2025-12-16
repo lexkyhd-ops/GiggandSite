@@ -18,6 +18,10 @@ let gameBoard = ['', '', '', '', '', '', '', '', ''];
 let gameStatus = 'waiting'; // waiting, playing, finished
 let playerScores = { X: 0, O: 0 }; // Track wins for each player
 
+// Random background image selection
+const backgroundImages = ['images/giggand1.png', 'images/giggand2.png'];
+let currentBackgroundImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+
 // DOM Elements
 const lobbyScreen = document.getElementById('lobby');
 const waitingScreen = document.getElementById('waiting');
@@ -168,6 +172,10 @@ socket.on('gameStart', (data) => {
         playerScores = { ...data.scores };
         updateScores();
     }
+    
+    // Set random background image for the board
+    currentBackgroundImage = backgroundImages[Math.floor(Math.random() * backgroundImages.length)];
+    updateBoardBackground();
     
     updatePlayers(data.players, data.yourPlayerIndex);
     gameStatus = 'playing';
@@ -479,6 +487,26 @@ function initGame() {
     updateBoard(gameBoard);
     resetGameBtn.style.display = 'none';
     updateScores();
+}
+
+// Update board background image
+function updateBoardBackground() {
+    const board = document.getElementById('board');
+    if (board) {
+        board.style.setProperty('--bg-image', `url('${currentBackgroundImage}')`);
+        // Update the ::before pseudo-element via CSS variable
+        const style = document.createElement('style');
+        style.textContent = `
+            .board::before {
+                background-image: var(--bg-image, url('${currentBackgroundImage}'));
+            }
+        `;
+        // Remove old style if exists
+        const oldStyle = document.getElementById('board-bg-style');
+        if (oldStyle) oldStyle.remove();
+        style.id = 'board-bg-style';
+        document.head.appendChild(style);
+    }
 }
 
 // Initialize on page load
