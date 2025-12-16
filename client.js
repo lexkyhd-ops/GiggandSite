@@ -505,12 +505,20 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center top !important;
-                    background-size: cover !important;
+                    background-position: center 25% !important;
+                    background-size: contain !important;
                     opacity: 1 !important;
-                    -webkit-background-size: cover !important;
-                    -moz-background-size: cover !important;
-                    -o-background-size: cover !important;
+                    -webkit-background-size: contain !important;
+                    -moz-background-size: contain !important;
+                    -o-background-size: contain !important;
+                }
+                .board {
+                    background-image: url('${currentBackgroundImage}') !important;
+                    background-position: center 20% !important;
+                    background-size: 120% !important;
+                    -webkit-background-size: 120% !important;
+                    -moz-background-size: 120% !important;
+                    -o-background-size: 120% !important;
                 }
             `;
             // Remove old style if exists
@@ -521,8 +529,8 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = 'center top';
-            board.style.backgroundSize = 'cover';
+            board.style.backgroundPosition = 'center 20%';
+            board.style.backgroundSize = '120%';
         };
         img.onerror = () => {
             console.error('Failed to load background image:', currentBackgroundImage);

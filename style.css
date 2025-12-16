@@ -290,6 +290,8 @@ header h1 {
     display: flex;
     justify-content: center;
     margin: 30px 0;
+    overflow: visible; /* Allow image to extend beyond container */
+    padding: 5%; /* Add padding so extended image is visible */
 }
 
 .board {
@@ -304,35 +306,37 @@ header h1 {
     max-width: 400px;
     aspect-ratio: 1;
     position: relative;
-    overflow: hidden;
+    overflow: visible; /* Allow image to extend beyond board */
     border: 3px solid #000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Fallback background for mobile */
     background-image: url('images/giggand1.png');
-    background-size: cover;
-    background-position: center top;
+    background-size: 120%; /* Scale image larger than board */
+    background-position: center 20%; /* Position to align forehead with board */
     background-repeat: no-repeat;
 }
 
-/* Background image for the board - covers entire board */
+/* Background image for the board - extends beyond board to show full image */
 .board::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    top: -20%; /* Extend beyond top */
+    left: -20%; /* Extend beyond left */
+    right: -20%; /* Extend beyond right */
+    bottom: -20%; /* Extend beyond bottom */
+    width: 140%; /* Make it larger than the board */
+    height: 140%; /* Make it larger than the board */
     background-image: url('images/giggand1.png');
-    background-size: cover;
-    background-position: center top; /* Position on the head/forehead */
+    background-size: contain; /* Show full image */
+    background-position: center 25%; /* Position forehead area to align with board center */
     background-repeat: no-repeat;
     opacity: 1;
     z-index: 0;
     border-radius: 7px;
     /* Ensure image loads on mobile */
-    -webkit-background-size: cover;
-    -moz-background-size: cover;
-    -o-background-size: cover;
+    -webkit-background-size: contain;
+    -moz-background-size: contain;
+    -o-background-size: contain;
 }
 
 /* Ensure cells are above the background */
@@ -490,20 +494,26 @@ header h1 {
         max-width: 100%;
         /* Ensure background image works on mobile */
         background-image: url('images/giggand1.png');
-        background-size: cover;
-        background-position: center top;
+        background-size: 120%;
+        background-position: center 20%;
         background-repeat: no-repeat;
-        -webkit-background-size: cover;
-        -moz-background-size: cover;
-        -o-background-size: cover;
+        -webkit-background-size: 120%;
+        -moz-background-size: 120%;
+        -o-background-size: 120%;
     }
     
     .board::before {
-        background-position: center top !important;
-        background-size: cover !important;
-        -webkit-background-size: cover !important;
-        -moz-background-size: cover !important;
-        -o-background-size: cover !important;
+        top: -15%;
+        left: -15%;
+        right: -15%;
+        bottom: -15%;
+        width: 130%;
+        height: 130%;
+        background-position: center 25% !important;
+        background-size: contain !important;
+        -webkit-background-size: contain !important;
+        -moz-background-size: contain !important;
+        -o-background-size: contain !important;
     }
 
     .cell {
