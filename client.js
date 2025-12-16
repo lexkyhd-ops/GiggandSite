@@ -1,4 +1,10 @@
-const socket = io();
+// Initialize socket with better error handling
+const socket = io({
+    transports: ['websocket', 'polling'],
+    reconnection: true,
+    reconnectionDelay: 1000,
+    reconnectionAttempts: 5
+});
 
 let playerName = '';
 let roomCode = '';
@@ -43,6 +49,14 @@ cells.forEach(cell => {
         const index = parseInt(cell.dataset.index);
         if (isMyTurn && !cell.classList.contains('filled') && gameStatus === 'playing') {
             makeMove(index);
+        } else if (!isMyTurn && gameStatus === 'playing') {
+            updateMessage(gameMessage, 'Nicht dein Zug!', 'error');
+            setTimeout(() => {
+                if (gameMessage.textContent === 'Nicht dein Zug!') {
+                    gameMessage.textContent = '';
+                    gameMessage.className = 'message';
+                }
+            }, 1500);
         }
     });
 });
@@ -50,6 +64,15 @@ cells.forEach(cell => {
 // Socket Events
 socket.on('connect', () => {
     console.log('Connected to server');
+    updateMessage(lobbyMessage, 'Mit Server verbunden!', 'success');
+    setTimeout(() => {
+        lobbyMessage.textContent = '';
+        lobbyMessage.className = 'message';
+    }, 2000);
+});
+
+socket.on('connect_error', () => {
+    updateMessage(lobbyMessage, 'Verbindungsfehler! Bitte Seite neu laden.', 'error');
 });
 
 socket.on('roomCreated', (data) => {
@@ -84,8 +107,8 @@ socket.on('playerJoined', (data) => {
 });
 
 socket.on('gameStart', (data) => {
-    currentPlayer = data.player;
-    updatePlayers(data.players);
+    currentPlayer = data.yourSymbol; // X or O
+    updatePlayers(data.players, data.yourPlayerIndex);
     gameStatus = 'playing';
     showScreen('game');
     updateTurn(data.currentTurn);
@@ -120,13 +143,13 @@ socket.on('gameOver', (data) => {
 });
 
 socket.on('playerLeft', () => {
-    updateMessage(gameMessage, 'Gegner hat das Spiel verlassen!', 'error');
+    updateMessage(lobbyMessage, 'Gegner hat das Spiel verlassen!', 'error');
     showScreen('lobby');
-    resetGame();
+    initGame();
 });
 
 socket.on('gameReset', () => {
-    resetGame();
+    initGame();
     updateMessage(gameMessage, 'Neues Spiel gestartet!', 'success');
     setTimeout(() => {
         gameMessage.textContent = '';
@@ -136,6 +159,10 @@ socket.on('gameReset', () => {
 
 socket.on('disconnect', () => {
     updateMessage(lobbyMessage, 'Verbindung zum Server verloren!', 'error');
+    if (gameStatus === 'playing') {
+        showScreen('lobby');
+        initGame();
+    }
 });
 
 // Functions
@@ -145,6 +172,7 @@ function createRoom() {
         updateMessage(lobbyMessage, 'Bitte gib deinen Namen ein!', 'error');
         return;
     }
+    updateMessage(lobbyMessage, 'Erstelle Raum...', 'info');
     socket.emit('createRoom', { playerName });
 }
 
@@ -164,19 +192,28 @@ function joinRoom() {
         updateMessage(lobbyMessage, 'Bitte gib einen gültigen 6-stelligen Code ein!', 'error');
         return;
     }
+    if (!playerName) {
+        updateMessage(lobbyMessage, 'Bitte gib zuerst deinen Namen ein!', 'error');
+        return;
+    }
     socket.emit('joinRoom', { roomCode: code, playerName });
+    updateMessage(lobbyMessage, 'Verbinde mit Raum...', 'info');
 }
 
 function cancelWaiting() {
-    socket.emit('leaveRoom', { roomCode });
+    if (roomCode) {
+        socket.emit('leaveRoom', { roomCode });
+    }
     showScreen('lobby');
-    resetGame();
+    initGame();
 }
 
 function leaveGame() {
-    socket.emit('leaveRoom', { roomCode });
+    if (roomCode) {
+        socket.emit('leaveRoom', { roomCode });
+    }
     showScreen('lobby');
-    resetGame();
+    initGame();
 }
 
 function resetGame() {
@@ -187,7 +224,16 @@ function makeMove(index) {
     if (gameBoard[index] !== '' || !isMyTurn || gameStatus !== 'playing') {
         return;
     }
+    // Visual feedback
+    const cell = cells[index];
+    cell.style.opacity = '0.5';
+    setTimeout(() => {
+        cell.style.opacity = '1';
+    }, 200);
+    
     socket.emit('makeMove', { roomCode, index, player: currentPlayer });
+    // Temporarily disable board to prevent double clicks
+    disableBoard();
 }
 
 function updateBoard(board) {
@@ -227,15 +273,17 @@ function updateTurn(currentTurn) {
     }
 }
 
-function updatePlayers(players) {
+function updatePlayers(players, yourIndex) {
     const player1El = document.getElementById('player1');
     const player2El = document.getElementById('player2');
     
     if (players.length > 0) {
-        player1El.querySelector('.player-name').textContent = players[0].name || 'Spieler 1';
+        const name1 = players[0].name || 'Spieler 1';
+        player1El.querySelector('.player-name').textContent = yourIndex === 0 ? `${name1} (Du)` : name1;
     }
     if (players.length > 1) {
-        player2El.querySelector('.player-name').textContent = players[1].name || 'Spieler 2';
+        const name2 = players[1].name || 'Spieler 2';
+        player2El.querySelector('.player-name').textContent = yourIndex === 1 ? `${name2} (Du)` : name2;
     }
 }
 
@@ -290,6 +338,17 @@ function updateMessage(element, message, type) {
     element.className = `message ${type}`;
 }
 
-// Initialize
-resetGame();
+// Initialize - reset local state only
+function initGame() {
+    gameBoard = ['', '', '', '', '', '', '', '', ''];
+    currentPlayer = null;
+    isMyTurn = false;
+    gameStatus = 'waiting';
+    roomCode = '';
+    updateBoard(gameBoard);
+    resetGameBtn.style.display = 'none';
+}
+
+// Initialize on page load
+initGame();
 

@@ -24,7 +24,7 @@
                     <button id="joinRoomBtn" class="btn btn-secondary">Spiel beitreten</button>
                 </div>
                 <div id="roomCodeGroup" class="input-group" style="display: none;">
-                    <input type="text" id="roomCode" placeholder="Raum-Code eingeben" maxlength="6">
+                    <input type="text" id="roomCode" placeholder="Raum-Code eingeben (z.B. ABC123)" maxlength="6" style="text-transform: uppercase;">
                     <button id="joinBtn" class="btn btn-primary">Beitreten</button>
                 </div>
                 <div id="lobbyMessage" class="message"></div>
@@ -92,6 +92,14 @@
 
     <script src="/socket.io/socket.io.js"></script>
     <script src="client.js"></script>
+    <script>
+        // Fallback if socket.io fails to load
+        if (typeof io === 'undefined') {
+            console.error('Socket.io failed to load');
+            document.getElementById('lobbyMessage').textContent = 'Fehler: Socket.io konnte nicht geladen werden. Bitte Seite neu laden.';
+            document.getElementById('lobbyMessage').className = 'message error';
+        }
+    </script>
 </body>
 </html>
 

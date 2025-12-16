@@ -9,7 +9,11 @@ const server = http.createServer(app);
 // Configure Socket.io for Vercel
 const io = socketIo(server, {
     transports: ['websocket', 'polling'],
-    allowEIO3: true
+    allowEIO3: true,
+    cors: {
+        origin: "*",
+        methods: ["GET", "POST"]
+    }
 });
 
 // Serve static files
@@ -94,9 +98,14 @@ io.on('connection', (socket) => {
         if (room.players.length === 2) {
             room.status = 'playing';
             setTimeout(() => {
-                io.to(roomCode).emit('gameStart', {
-                    players: room.players,
-                    currentTurn: room.currentTurn
+                // Send gameStart to each player with their own symbol
+                room.players.forEach((player, index) => {
+                    io.to(player.id).emit('gameStart', {
+                        players: room.players,
+                        currentTurn: room.currentTurn,
+                        yourSymbol: player.symbol,
+                        yourPlayerIndex: index
+                    });
                 });
             }, 1000);
         }
@@ -148,9 +157,14 @@ io.on('connection', (socket) => {
         room.status = 'playing';
         
         io.to(roomCode).emit('gameReset');
-        io.to(roomCode).emit('gameStart', {
-            players: room.players,
-            currentTurn: room.currentTurn
+        // Send gameStart to each player with their own symbol
+        room.players.forEach((player, index) => {
+            io.to(player.id).emit('gameStart', {
+                players: room.players,
+                currentTurn: room.currentTurn,
+                yourSymbol: player.symbol,
+                yourPlayerIndex: index
+            });
         });
     });
 
