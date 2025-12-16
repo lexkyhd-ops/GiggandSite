@@ -511,7 +511,7 @@ function updateBoardBackground() {
             const boardHeight = boardRect.height;
             console.log('Board dimensions:', boardWidth, 'x', boardHeight);
             
-            // Calculate scale factor to fit image coordinates to board
+            // Calculate scale factor to show full image while mapping coordinates to board
             // Find the bounding box of the coordinates
             const minX = Math.min(159, 401, 135, 395);
             const maxX = Math.max(159, 401, 135, 395);
@@ -520,28 +520,46 @@ function updateBoardBackground() {
             const coordWidth = maxX - minX;
             const coordHeight = maxY - minY;
             
-            // Scale image so coordinates match board size
-            const scaleX = boardWidth / coordWidth;
-            const scaleY = boardHeight / coordHeight;
-            const scale = Math.max(scaleX, scaleY) * 1.1; // Add 10% padding to ensure coverage
+            // Calculate scale to fit full image in board while maintaining aspect ratio
+            // We want the full image to be visible, so we use contain logic
+            const imageAspect = imgWidth / imgHeight;
+            const boardAspect = boardWidth / boardHeight;
             
-            const scaledImgWidth = imgWidth * scale;
-            const scaledImgHeight = imgHeight * scale;
+            let scale;
+            let scaledImgWidth, scaledImgHeight;
+            let offsetX, offsetY;
             
-            // Calculate offset to position coordinates correctly
-            // We want P4 (159, 141) to be at top-left of board
-            const offsetX = -minX * scale;
-            const offsetY = -minY * scale;
+            if (imageAspect > boardAspect) {
+                // Image is wider - fit to width
+                scale = boardWidth / imgWidth;
+                scaledImgWidth = boardWidth;
+                scaledImgHeight = imgHeight * scale;
+                offsetX = 0;
+                offsetY = (boardHeight - scaledImgHeight) / 2;
+            } else {
+                // Image is taller - fit to height
+                scale = boardHeight / imgHeight;
+                scaledImgWidth = imgWidth * scale;
+                scaledImgHeight = boardHeight;
+                offsetX = (boardWidth - scaledImgWidth) / 2;
+                offsetY = 0;
+            }
             
-            // Convert coordinates to percentages relative to scaled image
-            const p1x = ((401 * scale + offsetX) / boardWidth) * 100;
-            const p1y = ((133 * scale + offsetY) / boardHeight) * 100;
-            const p2x = ((135 * scale + offsetX) / boardWidth) * 100;
-            const p2y = ((336 * scale + offsetY) / boardHeight) * 100;
-            const p3x = ((395 * scale + offsetX) / boardWidth) * 100;
-            const p3y = ((345 * scale + offsetY) / boardHeight) * 100;
-            const p4x = ((159 * scale + offsetX) / boardWidth) * 100;
-            const p4y = ((141 * scale + offsetY) / boardHeight) * 100;
+            // Now calculate where the coordinates should be positioned
+            // The coordinates are in original image pixels, convert to board coordinates
+            const coordScaleX = scaledImgWidth / imgWidth;
+            const coordScaleY = scaledImgHeight / imgHeight;
+            
+            // Convert coordinates to percentages relative to board
+            // Coordinates are in original image pixels, scale them to board coordinates
+            const p1x = ((401 * coordScaleX + offsetX) / boardWidth) * 100;
+            const p1y = ((133 * coordScaleY + offsetY) / boardHeight) * 100;
+            const p2x = ((135 * coordScaleX + offsetX) / boardWidth) * 100;
+            const p2y = ((336 * coordScaleY + offsetY) / boardHeight) * 100;
+            const p3x = ((395 * coordScaleX + offsetX) / boardWidth) * 100;
+            const p3y = ((345 * coordScaleY + offsetY) / boardHeight) * 100;
+            const p4x = ((159 * coordScaleX + offsetX) / boardWidth) * 100;
+            const p4y = ((141 * coordScaleY + offsetY) / boardHeight) * 100;
             
             console.log('Calculated clip-path coordinates:', {p1x, p1y, p2x, p2y, p3x, p3y, p4x, p4y});
             
@@ -614,7 +632,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.2.0';
+        versionEl.textContent = '1.3.0';
     }
 });
 

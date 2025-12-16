@@ -314,7 +314,7 @@ header h1 {
     /* Clip-path will be set dynamically via JavaScript based on actual image dimensions */
     /* Fallback background for mobile */
     background-image: url('images/giggand2.png');
-    background-size: cover; /* Will be overridden by JavaScript */
+    background-size: contain; /* Show full image, will be overridden by JavaScript */
     background-position: center; /* Will be overridden by JavaScript */
     background-repeat: no-repeat;
 }
@@ -332,7 +332,7 @@ header h1 {
     background-image: url('images/giggand2.png');
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
-    background-size: cover; /* Will be overridden by JavaScript */
+    background-size: contain; /* Show full image, will be overridden by JavaScript */
     background-position: center; /* Will be overridden by JavaScript */
     background-repeat: no-repeat;
     opacity: 1;
