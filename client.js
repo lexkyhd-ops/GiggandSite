@@ -646,7 +646,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.3.0';
+        versionEl.textContent = '1.4.0';
     }
 });
 
