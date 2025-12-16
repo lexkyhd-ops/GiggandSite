@@ -529,21 +529,23 @@ function updateBoardBackground() {
             let scaledImgWidth, scaledImgHeight;
             let offsetX, offsetY;
             
-            // Scale to fit the entire image within the board (contain)
+            // Scale image to be very large (2.5x the board size)
+            const scaleMultiplier = 2.5; // Make image 2.5x larger than board
+            
             if (imageAspect > boardAspect) {
-                // Image is wider - fit to width, center vertically
-                scale = boardWidth / imgWidth;
-                scaledImgWidth = boardWidth;
+                // Image is wider - scale to be much larger than width
+                scale = (boardWidth * scaleMultiplier) / imgWidth;
+                scaledImgWidth = boardWidth * scaleMultiplier;
                 scaledImgHeight = imgHeight * scale;
-                offsetX = 0;
+                offsetX = (boardWidth - scaledImgWidth) / 2;
                 offsetY = (boardHeight - scaledImgHeight) / 2;
             } else {
-                // Image is taller - fit to height, center horizontally
-                scale = boardHeight / imgHeight;
+                // Image is taller - scale to be much larger than height
+                scale = (boardHeight * scaleMultiplier) / imgHeight;
                 scaledImgWidth = imgWidth * scale;
-                scaledImgHeight = boardHeight;
+                scaledImgHeight = boardHeight * scaleMultiplier;
                 offsetX = (boardWidth - scaledImgWidth) / 2;
-                offsetY = 0;
+                offsetY = (boardHeight - scaledImgHeight) / 2;
             }
             
             console.log('Image scale calculation:', {
