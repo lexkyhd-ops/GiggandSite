@@ -5,6 +5,14 @@
       "destination": "/api/index.js"
     },
     {
+      "source": "/style.css",
+      "destination": "/api/static.js"
+    },
+    {
+      "source": "/client.js",
+      "destination": "/api/static.js"
+    },
+    {
       "source": "/",
       "destination": "/api/index.js"
     }
