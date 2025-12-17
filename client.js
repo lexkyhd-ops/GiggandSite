@@ -49,6 +49,11 @@ const cells = document.querySelectorAll('.cell');
 createRoomBtn.addEventListener('click', (event) => {
     createRoom(event);
 });
+if (createTestRoomBtn) {
+    createTestRoomBtn.addEventListener('click', () => {
+        createRoom({ shiftKey: true }); // Simulate Shift key for test mode
+    });
+}
 joinRoomBtn.addEventListener('click', showRoomCodeInput);
 joinBtn.addEventListener('click', joinRoom);
 cancelWaitBtn.addEventListener('click', cancelWaiting);
