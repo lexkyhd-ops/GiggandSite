@@ -48,12 +48,13 @@
 
         <!-- Game Screen -->
         <div id="game" class="screen active">
-            <div class="game-header">
+            <!-- Game header and info hidden for image adjustment -->
+            <div class="game-header" style="display: none;">
                 <div class="room-code-display">Raum: <span id="gameRoomCode"></span></div>
                 <button id="leaveGameBtn" class="btn btn-small">Spiel verlassen</button>
             </div>
             
-            <div class="game-info">
+            <div class="game-info" style="display: none;">
                 <div class="player-info">
                     <div class="player" id="player1">
                         <span class="player-name">Spieler 1</span>
