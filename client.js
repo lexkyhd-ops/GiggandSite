@@ -654,13 +654,13 @@ function updateBoardBackground() {
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
-                    /* Extend beyond board to show full image */
-                    top: -50% !important;
-                    left: -50% !important;
-                    right: -50% !important;
-                    bottom: -50% !important;
-                    width: 200% !important;
-                    height: 200% !important;
+                    /* Extend much beyond board to show full image */
+                    top: -100% !important;
+                    left: -100% !important;
+                    right: -100% !important;
+                    bottom: -100% !important;
+                    width: 300% !important;
+                    height: 300% !important;
                     /* Show full image - no clipping */
                     clip-path: none !important;
                     -webkit-clip-path: none !important;
