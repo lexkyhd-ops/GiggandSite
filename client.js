@@ -306,6 +306,7 @@ socket.on('disconnect', () => {
         initGame();
     }
 });
+} // End of if (socket) block
 
 // Functions
 function createRoom(event) {
