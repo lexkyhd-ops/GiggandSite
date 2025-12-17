@@ -667,13 +667,13 @@ function updateBoardBackground() {
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
-                    /* Extend much beyond board to show full image */
-                    top: -500% !important;
-                    left: -500% !important;
-                    right: -500% !important;
-                    bottom: -500% !important;
-                    width: 1000% !important;
-                    height: 1000% !important;
+                     /* Extend much beyond board to show full image */
+                     top: -500% !important;
+                     left: -500% !important;
+                     right: -500% !important;
+                     bottom: -500% !important;
+                     width: 1000% !important;
+                     height: 1000% !important;
                     /* Show full image - no clipping */
                     clip-path: none !important;
                     -webkit-clip-path: none !important;
@@ -762,15 +762,6 @@ function setupAdjustmentControls() {
             adjustmentValues.offsetYPercent = parseInt(e.target.value);
             offsetYValue.textContent = adjustmentValues.offsetYPercent;
             console.log('OffsetY changed to:', adjustmentValues.offsetYPercent);
-            updateBoardBackground();
-        });
-    }
-    
-    if (bgPosXSlider && bgPosXValue) {
-        bgPosXSlider.addEventListener('input', (e) => {
-            adjustmentValues.bgPosXPercent = parseInt(e.target.value);
-            bgPosXValue.textContent = adjustmentValues.bgPosXPercent;
-            console.log('BgPosX changed to:', adjustmentValues.bgPosXPercent);
             updateBoardBackground();
         });
     }

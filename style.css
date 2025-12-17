@@ -11,11 +11,9 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: flex-start;
-    padding: 0;
-    overflow: visible !important; /* Allow image to extend beyond body */
-    overflow-x: visible !important;
-    overflow-y: visible !important;
+    align-items: center;
+    padding: 20px;
+    overflow: visible; /* Allow image to extend beyond body */
 }
 
 .container {
@@ -71,15 +69,11 @@ header h1 {
 .screen {
     display: none;
     overflow: visible !important; /* Allow image to extend beyond screen */
-    overflow-x: visible !important;
-    overflow-y: visible !important;
 }
 
 .screen.active {
     display: block;
     overflow: visible !important; /* Allow image to extend beyond screen */
-    overflow-x: visible !important;
-    overflow-y: visible !important;
 }
 
 /* Lobby Styles */
@@ -305,8 +299,6 @@ header h1 {
     justify-content: center;
     margin: 30px 0;
     overflow: visible !important; /* Allow image to extend beyond container */
-    overflow-x: visible !important;
-    overflow-y: visible !important;
     padding: 50% !important; /* Much more padding to prevent clipping */
     min-height: 3000px !important; /* Much more space for larger image */
     position: relative;
@@ -343,7 +335,7 @@ header h1 {
     position: absolute;
     top: -500% !important; /* Extend much further beyond top */
     left: -500% !important; /* Extend much further beyond left */
-    right: -500% !important; /* Extend much further beyond bottom */
+    right: -500% !important; /* Extend much further beyond right */
     bottom: -500% !important; /* Extend much further beyond bottom */
     width: 1000% !important; /* Make it 10x larger than board */
     height: 1000% !important; /* Make it 10x larger than board */
