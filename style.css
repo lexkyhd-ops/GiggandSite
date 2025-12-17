@@ -330,12 +330,12 @@ header h1 {
 .board::before {
     content: '';
     position: absolute;
-    top: -50%; /* Extend beyond top */
-    left: -50%; /* Extend beyond left */
-    right: -50%; /* Extend beyond right */
-    bottom: -50%; /* Extend beyond bottom */
-    width: 200%; /* Make it much larger than board */
-    height: 200%; /* Make it much larger than board */
+    top: -100%; /* Extend much beyond top */
+    left: -100%; /* Extend much beyond left */
+    right: -100%; /* Extend much beyond right */
+    bottom: -100%; /* Extend much beyond bottom */
+    width: 300%; /* Make it 3x larger than board */
+    height: 300%; /* Make it 3x larger than board */
     background-image: url('images/giggand2.png');
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
