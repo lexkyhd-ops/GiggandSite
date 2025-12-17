@@ -1,13 +1,15 @@
 // Initialize socket with better error handling
 // Render supports WebSockets, so we can use both transports
-const socket = io({
-    transports: ['websocket', 'polling'], // WebSocket first, fallback to polling
-    reconnection: true,
-    reconnectionDelay: 1000,
-    reconnectionAttempts: 5,
-    timeout: 20000,
-    forceNew: false
-});
+// DISABLED for image adjustment mode - no socket connection needed
+// const socket = io({
+//     transports: ['websocket', 'polling'], // WebSocket first, fallback to polling
+//     reconnection: true,
+//     reconnectionDelay: 1000,
+//     reconnectionAttempts: 5,
+//     timeout: 20000,
+//     forceNew: false
+// });
+const socket = null; // No socket connection for image adjustment mode
 
 
 let playerName = '';
@@ -78,7 +80,8 @@ cells.forEach(cell => {
     });
 });
 
-// Socket Events
+// Socket Events - disabled for image adjustment mode
+if (socket) {
 socket.on('connect', () => {
     console.log('Connected to server');
     const transport = socket.io.engine?.transport?.name || 'unknown';
