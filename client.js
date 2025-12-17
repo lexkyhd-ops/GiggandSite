@@ -661,7 +661,7 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center ${adjustmentValues.bgPosYPercent}% !important;
+                    background-position: ${adjustmentValues.bgPosXPercent}% ${adjustmentValues.bgPosYPercent}% !important;
                     background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     opacity: 1 !important;
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
