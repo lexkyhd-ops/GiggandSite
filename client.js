@@ -698,14 +698,37 @@ function updateBoardBackground() {
     }
 }
 
-// Initialize on page load
-initGame();
+// Initialize on page load - skip game init for image adjustment mode
+// initGame();
 
-// Set initial background image when page loads
-window.addEventListener('load', () => {
+// Show game screen directly for image adjustment
+document.addEventListener('DOMContentLoaded', () => {
+    // Hide lobby and waiting screens
+    const lobbyScreen = document.getElementById('lobby');
+    const waitingScreen = document.getElementById('waiting');
+    const gameScreen = document.getElementById('game');
+    
+    if (lobbyScreen) lobbyScreen.classList.remove('active');
+    if (waitingScreen) waitingScreen.classList.remove('active');
+    if (gameScreen) gameScreen.classList.add('active');
+    
+    // Disable all cells for image adjustment mode
+    const cells = document.querySelectorAll('.cell');
+    cells.forEach(cell => {
+        cell.style.pointerEvents = 'none';
+        cell.style.cursor = 'default';
+    });
+    
+    // Set initial background image
     setTimeout(() => {
         updateBoardBackground();
     }, 200);
+    
+    // Update version display
+    const versionEl = document.getElementById('version');
+    if (versionEl) {
+        versionEl.textContent = '1.9.0';
+    }
 });
 
 // Update background when window resizes
@@ -713,13 +736,5 @@ window.addEventListener('resize', () => {
     setTimeout(() => {
         updateBoardBackground();
     }, 100);
-});
-
-// Update version display
-document.addEventListener('DOMContentLoaded', () => {
-    const versionEl = document.getElementById('version');
-    if (versionEl) {
-        versionEl.textContent = '1.9.0';
-    }
 });
 

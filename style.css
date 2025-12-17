@@ -322,7 +322,7 @@ header h1 {
     /* Fallback background for mobile */
     background-image: url('images/giggand2.png');
     background-size: contain; /* Show full image, will be overridden by JavaScript */
-    background-position: center 80%; /* Center horizontally, position much lower vertically */
+    background-position: center 90%; /* Center horizontally, position much lower vertically */
     background-repeat: no-repeat;
 }
 
