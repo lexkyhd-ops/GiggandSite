@@ -668,12 +668,12 @@ function updateBoardBackground() {
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     /* Extend much beyond board to show full image */
-                    top: -100% !important;
-                    left: -100% !important;
-                    right: -100% !important;
-                    bottom: -100% !important;
-                    width: 300% !important;
-                    height: 300% !important;
+                    top: -500% !important;
+                    left: -500% !important;
+                    right: -500% !important;
+                    bottom: -500% !important;
+                    width: 1000% !important;
+                    height: 1000% !important;
                     /* Show full image - no clipping */
                     clip-path: none !important;
                     -webkit-clip-path: none !important;

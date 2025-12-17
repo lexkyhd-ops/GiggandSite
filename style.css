@@ -11,9 +11,11 @@ body {
     min-height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
-    padding: 20px;
-    overflow: visible; /* Allow image to extend beyond body */
+    align-items: flex-start;
+    padding: 0;
+    overflow: visible !important; /* Allow image to extend beyond body */
+    overflow-x: visible !important;
+    overflow-y: visible !important;
 }
 
 .container {
@@ -24,7 +26,10 @@ body {
     width: 100%;
     padding: 30px;
     overflow: visible !important; /* Allow board image to extend beyond container */
+    overflow-x: visible !important;
+    overflow-y: visible !important;
     position: relative;
+    min-height: 200vh; /* Ensure enough space for large image */
 }
 
 header {
@@ -296,8 +301,10 @@ header h1 {
     justify-content: center;
     margin: 30px 0;
     overflow: visible !important; /* Allow image to extend beyond container */
-    padding: 20%; /* More padding to prevent clipping */
-    min-height: 1000px; /* More space for larger image */
+    overflow-x: visible !important;
+    overflow-y: visible !important;
+    padding: 50% !important; /* Much more padding to prevent clipping */
+    min-height: 3000px !important; /* Much more space for larger image */
     position: relative;
 }
 
@@ -330,12 +337,12 @@ header h1 {
 .board::before {
     content: '';
     position: absolute;
-    top: -200%; /* Extend much further beyond top */
-    left: -200%; /* Extend much further beyond left */
-    right: -200%; /* Extend much further beyond right */
-    bottom: -200%; /* Extend much further beyond bottom */
-    width: 500%; /* Make it 5x larger than board */
-    height: 500%; /* Make it 5x larger than board */
+    top: -500% !important; /* Extend much further beyond top */
+    left: -500% !important; /* Extend much further beyond left */
+    right: -500% !important; /* Extend much further beyond bottom */
+    bottom: -500% !important; /* Extend much further beyond bottom */
+    width: 1000% !important; /* Make it 10x larger than board */
+    height: 1000% !important; /* Make it 10x larger than board */
     background-image: url('images/giggand2.png');
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
