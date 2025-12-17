@@ -699,7 +699,7 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = `center ${adjustmentValues.bgPosYPercent}%`;
+            board.style.backgroundPosition = `${adjustmentValues.bgPosXPercent}% ${adjustmentValues.bgPosYPercent}%`;
             board.style.backgroundSize = `${scaledImgWidth}px ${scaledImgHeight}px`;
             board.style.clipPath = clipPath;
             board.style.webkitClipPath = clipPath;
