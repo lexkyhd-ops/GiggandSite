@@ -311,7 +311,7 @@ function createRoom(event) {
     const testMode = (event && event.shiftKey) || (event && event.testMode === true);
     console.log('Creating room - Test mode:', testMode, 'Event:', event, 'PlayerName:', playerName);
     updateMessage(lobbyMessage, testMode ? 'Erstelle Raum im Test-Modus...' : 'Erstelle Raum...', 'info');
-    socket.emit('createRoom', { playerName: playerName, testMode: !!testMode });
+    socket.emit('createRoom', { playerName: playerName, testMode: testMode === true });
 }
 
 function showRoomCodeInput() {

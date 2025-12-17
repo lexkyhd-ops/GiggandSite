@@ -59,7 +59,11 @@ io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
     socket.on('createRoom', ({ playerName, testMode }) => {
+        console.log(`createRoom received - playerName: ${playerName}, testMode: ${testMode}, type: ${typeof testMode}`);
         const roomCode = generateRoomCode();
+        const isTestMode = testMode === true || testMode === 'true' || testMode === 1;
+        console.log(`Processed testMode: ${isTestMode}`);
+        
         const room = {
             code: roomCode,
             players: [{ id: socket.id, name: playerName, symbol: 'X' }],
@@ -67,37 +71,35 @@ io.on('connection', (socket) => {
             currentTurn: 'X',
             status: 'waiting',
             scores: { X: 0, O: 0 }, // Track wins for each player
-            testMode: testMode || false // Enable test mode for solo play
+            testMode: isTestMode // Enable test mode for solo play
         };
         
         rooms.set(roomCode, room);
         socket.join(roomCode);
         
         // If test mode, start game immediately with bot player
-        if (testMode) {
+        if (isTestMode) {
             console.log(`TEST MODE: Starting game immediately for ${playerName}`);
             room.players.push({ id: 'bot', name: 'Bot (Test)', symbol: 'O' });
             room.status = 'playing';
             socket.emit('roomCreated', { roomCode, testMode: true });
             io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
-            // Start game immediately
-            setTimeout(() => {
-                // Send gameStart to the player
-                io.to(socket.id).emit('gameStart', {
-                    players: room.players,
-                    currentTurn: room.currentTurn,
-                    yourSymbol: 'X',
-                    yourPlayerIndex: 0,
-                    scores: room.scores,
-                    testMode: true // Indicate test mode
-                });
-            }, 100);
+            // Start game immediately - no delay
+            console.log(`Sending gameStart to ${socket.id} with testMode: true`);
+            io.to(socket.id).emit('gameStart', {
+                players: room.players,
+                currentTurn: room.currentTurn,
+                yourSymbol: 'X',
+                yourPlayerIndex: 0,
+                scores: room.scores,
+                testMode: true // Indicate test mode
+            });
         } else {
             socket.emit('roomCreated', { roomCode });
             io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
         }
         
-        console.log(`Room created: ${roomCode} by ${playerName}${testMode ? ' (TEST MODE)' : ''}`);
+        console.log(`Room created: ${roomCode} by ${playerName}${isTestMode ? ' (TEST MODE)' : ''}`);
     });
 
     socket.on('joinRoom', ({ roomCode, playerName }) => {
