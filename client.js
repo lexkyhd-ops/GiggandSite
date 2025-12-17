@@ -563,6 +563,7 @@ function initGame() {
 let adjustmentValues = {
     scaleMultiplier: 5,
     offsetYPercent: 60,
+    bgPosXPercent: 50,
     bgPosYPercent: 80,
     offsetXPx: 0
 };
@@ -679,7 +680,7 @@ function updateBoardBackground() {
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center ${adjustmentValues.bgPosYPercent}% !important;
+                    background-position: ${adjustmentValues.bgPosXPercent}% ${adjustmentValues.bgPosYPercent}% !important;
                     background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
@@ -719,6 +720,7 @@ function updateCurrentValuesDisplay() {
     if (valuesEl) {
         valuesEl.textContent = `scaleMultiplier: ${adjustmentValues.scaleMultiplier}
 offsetYPercent: ${adjustmentValues.offsetYPercent}%
+bgPosXPercent: ${adjustmentValues.bgPosXPercent}%
 bgPosYPercent: ${adjustmentValues.bgPosYPercent}%
 offsetXPx: ${adjustmentValues.offsetXPx}px`;
     }

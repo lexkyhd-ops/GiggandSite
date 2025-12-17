@@ -296,8 +296,8 @@ header h1 {
     justify-content: center;
     margin: 30px 0;
     overflow: visible !important; /* Allow image to extend beyond container */
-    padding: 10%; /* Padding for 5x larger image */
-    min-height: 800px; /* Space for 5x larger image */
+    padding: 20%; /* More padding to prevent clipping */
+    min-height: 1000px; /* More space for larger image */
     position: relative;
 }
 
@@ -330,12 +330,12 @@ header h1 {
 .board::before {
     content: '';
     position: absolute;
-    top: -100%; /* Extend much beyond top */
-    left: -100%; /* Extend much beyond left */
-    right: -100%; /* Extend much beyond right */
-    bottom: -100%; /* Extend much beyond bottom */
-    width: 300%; /* Make it 3x larger than board */
-    height: 300%; /* Make it 3x larger than board */
+    top: -200%; /* Extend much further beyond top */
+    left: -200%; /* Extend much further beyond left */
+    right: -200%; /* Extend much further beyond right */
+    bottom: -200%; /* Extend much further beyond bottom */
+    width: 500%; /* Make it 5x larger than board */
+    height: 500%; /* Make it 5x larger than board */
     background-image: url('images/giggand2.png');
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
