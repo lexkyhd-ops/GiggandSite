@@ -716,11 +716,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (waitingScreen) waitingScreen.classList.remove('active');
     if (gameScreen) gameScreen.classList.add('active');
     
-    // Disable all cells for image adjustment mode
+    // Disable all cells for image adjustment mode (no clicking, no game functions)
     const cells = document.querySelectorAll('.cell');
     cells.forEach(cell => {
         cell.style.pointerEvents = 'none';
         cell.style.cursor = 'default';
+        cell.style.opacity = '0.3'; // Make cells semi-transparent so image is more visible
     });
     
     // Set initial background image
