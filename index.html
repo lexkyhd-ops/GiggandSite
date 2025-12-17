@@ -48,6 +48,40 @@
 
         <!-- Game Screen -->
         <div id="game" class="screen active">
+            <!-- Image Adjustment Panel -->
+            <div class="adjustment-panel">
+                <h3>Bild-Justierung</h3>
+                <div class="adjustment-controls">
+                    <div class="control-group">
+                        <label>Skalierung (scaleMultiplier):</label>
+                        <input type="range" id="scaleSlider" min="1" max="20" step="0.1" value="5">
+                        <span id="scaleValue">5</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Vertikaler Offset (%):</label>
+                        <input type="range" id="offsetYSlider" min="-100" max="200" step="1" value="60">
+                        <span id="offsetYValue">60</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Background Position Y (%):</label>
+                        <input type="range" id="bgPosYSlider" min="0" max="100" step="1" value="80">
+                        <span id="bgPosYValue">80</span>
+                    </div>
+                    <div class="control-group">
+                        <label>Horizontaler Offset (px):</label>
+                        <input type="range" id="offsetXSlider" min="-500" max="500" step="1" value="0">
+                        <span id="offsetXValue">0</span>
+                    </div>
+                </div>
+                <div class="current-values">
+                    <h4>Aktuelle Werte (zum Kopieren):</h4>
+                    <pre id="currentValues">scaleMultiplier: 5
+offsetY: 60%
+bgPosY: 80%
+offsetX: 0px</pre>
+                </div>
+            </div>
+
             <!-- Game header and info hidden for image adjustment -->
             <div class="game-header" style="display: none;">
                 <div class="room-code-display">Raum: <span id="gameRoomCode"></span></div>

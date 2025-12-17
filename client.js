@@ -559,6 +559,14 @@ function initGame() {
     updateScores();
 }
 
+// Global adjustment values
+let adjustmentValues = {
+    scaleMultiplier: 5,
+    offsetYPercent: 60,
+    bgPosYPercent: 80,
+    offsetXPx: 0
+};
+
 // Update board background image with coordinate mapping
 function updateBoardBackground() {
     const board = document.getElementById('board');
@@ -596,8 +604,8 @@ function updateBoardBackground() {
             let scaledImgWidth, scaledImgHeight;
             let offsetX, offsetY;
             
-            // Scale image to be larger (5x the board size)
-            const scaleMultiplier = 5; // Make image 5x larger than board
+            // Scale image to be larger - use adjustment value
+            const scaleMultiplier = adjustmentValues.scaleMultiplier; // Make image larger than board
             
             if (imageAspect > boardAspect) {
                 // Image is wider - scale to be much larger than width
@@ -671,7 +679,7 @@ function updateBoardBackground() {
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: center ${offsetY}px !important;
+                    background-position: center ${adjustmentValues.bgPosYPercent}% !important;
                     background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
@@ -690,10 +698,13 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = `center ${offsetY}px`;
+            board.style.backgroundPosition = `center ${adjustmentValues.bgPosYPercent}%`;
             board.style.backgroundSize = `${scaledImgWidth}px ${scaledImgHeight}px`;
             board.style.clipPath = clipPath;
             board.style.webkitClipPath = clipPath;
+            
+            // Update current values display
+            updateCurrentValuesDisplay();
         };
         img.onerror = () => {
             console.error('Failed to load background image:', currentBackgroundImage);
