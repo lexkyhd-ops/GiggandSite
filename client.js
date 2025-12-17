@@ -30,6 +30,7 @@ const playerNameInput = document.getElementById('playerName');
 const roomCodeInput = document.getElementById('roomCode');
 const roomCodeGroup = document.getElementById('roomCodeGroup');
 const createRoomBtn = document.getElementById('createRoomBtn');
+const createTestRoomBtn = document.getElementById('createTestRoomBtn');
 const joinRoomBtn = document.getElementById('joinRoomBtn');
 const joinBtn = document.getElementById('joinBtn');
 const cancelWaitBtn = document.getElementById('cancelWaitBtn');
@@ -294,8 +295,9 @@ function createRoom(event) {
         updateMessage(lobbyMessage, 'Bitte gib deinen Namen ein!', 'error');
         return;
     }
-    // Check if Shift key is held for test mode
-    const testMode = event && event.shiftKey;
+    // Check if Shift key is held for test mode or if testMode is explicitly set
+    const testMode = (event && event.shiftKey) || (event && event.testMode === true);
+    console.log('Creating room - Test mode:', testMode, 'Event:', event);
     updateMessage(lobbyMessage, testMode ? 'Erstelle Raum im Test-Modus...' : 'Erstelle Raum...', 'info');
     socket.emit('createRoom', { playerName, testMode: testMode });
 }
