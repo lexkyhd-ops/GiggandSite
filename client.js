@@ -138,8 +138,15 @@ socket.on('roomCreated', (data) => {
     roomCode = data.roomCode;
     displayRoomCode.textContent = roomCode;
     gameRoomCode.textContent = roomCode;
-    showScreen('waiting');
-    updateMessage(lobbyMessage, `Raum erstellt! Code: ${roomCode}`, 'success');
+    
+    // In test mode, don't show waiting screen - game will start immediately
+    if (data.testMode) {
+        console.log('Room created in test mode - waiting for gameStart');
+        updateMessage(lobbyMessage, `Test-Modus: Raum erstellt! Code: ${roomCode}`, 'success');
+    } else {
+        showScreen('waiting');
+        updateMessage(lobbyMessage, `Raum erstellt! Code: ${roomCode}`, 'success');
+    }
 });
 
 socket.on('roomJoined', (data) => {
