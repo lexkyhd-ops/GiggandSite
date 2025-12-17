@@ -215,6 +215,19 @@ socket.on('gameStart', (data) => {
 
 socket.on('moveMade', (data) => {
     updateBoard(data.board);
+    
+    // In test mode, switch currentPlayer to match the current turn so player can control both
+    if (window.testMode && data.currentTurn) {
+        currentPlayer = data.currentTurn;
+        // Update UI to show which symbol we're playing as
+        const players = [
+            {name: playerName, symbol: 'X'},
+            {name: 'Bot (Test)', symbol: 'O'}
+        ];
+        const playerIndex = currentPlayer === 'X' ? 0 : 1;
+        updatePlayers(players, playerIndex);
+    }
+    
     updateTurn(data.currentTurn);
     checkGameStatus(data);
 });
