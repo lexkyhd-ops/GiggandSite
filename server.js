@@ -82,10 +82,13 @@ io.on('connection', (socket) => {
             console.log(`TEST MODE: Starting game immediately for ${playerName}`);
             room.players.push({ id: 'bot', name: 'Bot (Test)', symbol: 'O' });
             room.status = 'playing';
+            // Emit roomCreated with testMode flag FIRST
             socket.emit('roomCreated', { roomCode, testMode: true });
-            io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
+            // Don't emit playerJoined - it will trigger waiting screen
+            // io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
             // Start game immediately - no delay
             console.log(`Sending gameStart to ${socket.id} with testMode: true`);
+            // Send gameStart immediately without setTimeout
             io.to(socket.id).emit('gameStart', {
                 players: room.players,
                 currentTurn: room.currentTurn,

@@ -166,6 +166,10 @@ socket.on('roomNotFound', () => {
 });
 
 socket.on('playerJoined', (data) => {
+    // Don't update if we're in test mode (gameStart will handle it)
+    if (window.testMode) {
+        return;
+    }
     playerCount.textContent = `${data.playerCount}/2`;
     if (data.playerCount === 2) {
         updateMessage(lobbyMessage, 'Gegner beigetreten! Spiel startet...', 'success');
