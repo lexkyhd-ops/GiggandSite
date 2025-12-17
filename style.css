@@ -546,3 +546,96 @@ header h1 {
     }
 }
 
+/* Image Adjustment Panel */
+.adjustment-panel {
+    background: rgba(255, 255, 255, 0.95);
+    border: 2px solid #333;
+    border-radius: 10px;
+    padding: 20px;
+    margin: 20px auto;
+    max-width: 600px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.adjustment-panel h3 {
+    margin-top: 0;
+    color: #333;
+    text-align: center;
+}
+
+.adjustment-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.control-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.control-group label {
+    min-width: 200px;
+    font-weight: bold;
+    color: #333;
+}
+
+.control-group input[type="range"] {
+    flex: 1;
+    height: 8px;
+    border-radius: 5px;
+    background: #ddd;
+    outline: none;
+}
+
+.control-group input[type="range"]::-webkit-slider-thumb {
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+}
+
+.control-group input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #4CAF50;
+    cursor: pointer;
+    border: none;
+}
+
+.control-group span {
+    min-width: 60px;
+    text-align: right;
+    font-weight: bold;
+    color: #4CAF50;
+}
+
+.current-values {
+    margin-top: 20px;
+    padding: 15px;
+    background: #f5f5f5;
+    border-radius: 5px;
+}
+
+.current-values h4 {
+    margin-top: 0;
+    color: #333;
+}
+
+.current-values pre {
+    background: #fff;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    color: #333;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+}
+

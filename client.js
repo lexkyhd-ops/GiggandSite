@@ -660,7 +660,7 @@ function updateBoardBackground() {
             style.textContent = `
                 .board::before {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: ${offsetX}px ${offsetY}px !important;
+                    background-position: center ${adjustmentValues.bgPosYPercent}% !important;
                     background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     opacity: 1 !important;
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
@@ -734,6 +734,9 @@ document.addEventListener('DOMContentLoaded', () => {
         cell.style.cursor = 'default';
         cell.style.opacity = '0.3'; // Make cells semi-transparent so image is more visible
     });
+    
+    // Setup adjustment controls
+    setupAdjustmentControls();
     
     // Set initial background image
     setTimeout(() => {
