@@ -805,6 +805,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Setup adjustment controls
     setupAdjustmentControls();
     
+    // Update current values display initially
+    updateCurrentValuesDisplay();
+    
     // Set initial background image
     setTimeout(() => {
         updateBoardBackground();
