@@ -273,14 +273,16 @@ socket.on('disconnect', () => {
 });
 
 // Functions
-function createRoom() {
+function createRoom(event) {
     playerName = playerNameInput.value.trim();
     if (!playerName) {
         updateMessage(lobbyMessage, 'Bitte gib deinen Namen ein!', 'error');
         return;
     }
-    updateMessage(lobbyMessage, 'Erstelle Raum...', 'info');
-    socket.emit('createRoom', { playerName });
+    // Check if Shift key is held for test mode
+    const testMode = event && event.shiftKey;
+    updateMessage(lobbyMessage, testMode ? 'Erstelle Raum im Test-Modus...' : 'Erstelle Raum...', 'info');
+    socket.emit('createRoom', { playerName, testMode: testMode });
 }
 
 function showRoomCodeInput() {
