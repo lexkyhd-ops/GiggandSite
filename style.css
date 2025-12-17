@@ -71,11 +71,15 @@ header h1 {
 .screen {
     display: none;
     overflow: visible !important; /* Allow image to extend beyond screen */
+    overflow-x: visible !important;
+    overflow-y: visible !important;
 }
 
 .screen.active {
     display: block;
     overflow: visible !important; /* Allow image to extend beyond screen */
+    overflow-x: visible !important;
+    overflow-y: visible !important;
 }
 
 /* Lobby Styles */
