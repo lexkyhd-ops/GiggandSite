@@ -296,8 +296,8 @@ header h1 {
     justify-content: center;
     margin: 30px 0;
     overflow: visible !important; /* Allow image to extend beyond container */
-    padding: 30%; /* More padding for 50x larger image */
-    min-height: 5000px; /* More space for 50x larger image */
+    padding: 10%; /* Padding for 5x larger image */
+    min-height: 800px; /* Space for 5x larger image */
     position: relative;
 }
 
