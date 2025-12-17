@@ -58,7 +58,7 @@ function checkWinner(board) {
 io.on('connection', (socket) => {
     console.log('User connected:', socket.id);
 
-    socket.on('createRoom', ({ playerName }) => {
+    socket.on('createRoom', ({ playerName, testMode }) => {
         const roomCode = generateRoomCode();
         const room = {
             code: roomCode,
@@ -66,7 +66,8 @@ io.on('connection', (socket) => {
             board: ['', '', '', '', '', '', '', '', ''],
             currentTurn: 'X',
             status: 'waiting',
-            scores: { X: 0, O: 0 } // Track wins for each player
+            scores: { X: 0, O: 0 }, // Track wins for each player
+            testMode: testMode || false // Enable test mode for solo play
         };
         
         rooms.set(roomCode, room);
@@ -74,7 +75,24 @@ io.on('connection', (socket) => {
         socket.emit('roomCreated', { roomCode });
         io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
         
-        console.log(`Room created: ${roomCode} by ${playerName}`);
+        // If test mode, start game immediately with bot player
+        if (testMode) {
+            room.players.push({ id: 'bot', name: 'Bot (Test)', symbol: 'O' });
+            room.status = 'playing';
+            setTimeout(() => {
+                // Send gameStart to the player
+                io.to(socket.id).emit('gameStart', {
+                    players: room.players,
+                    currentTurn: room.currentTurn,
+                    yourSymbol: 'X',
+                    yourPlayerIndex: 0,
+                    scores: room.scores,
+                    testMode: true // Indicate test mode
+                });
+            }, 500);
+        }
+        
+        console.log(`Room created: ${roomCode} by ${playerName}${testMode ? ' (TEST MODE)' : ''}`);
     });
 
     socket.on('joinRoom', ({ roomCode, playerName }) => {

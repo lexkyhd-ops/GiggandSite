@@ -160,7 +160,8 @@ socket.on('playerJoined', (data) => {
 socket.on('gameStart', (data) => {
     console.log('gameStart received:', data);
     currentPlayer = data.yourSymbol; // X or O
-    console.log('Game started - My symbol:', currentPlayer, 'Current turn:', data.currentTurn, 'Players:', data.players);
+    window.testMode = data.testMode || false; // Store test mode flag
+    console.log('Game started - My symbol:', currentPlayer, 'Current turn:', data.currentTurn, 'Players:', data.players, 'Test mode:', window.testMode);
     
     if (!currentPlayer) {
         console.error('ERROR: currentPlayer is not set!', data);
@@ -194,6 +195,11 @@ socket.on('gameStart', (data) => {
     } else {
         console.warn('No currentTurn in gameStart data');
         turnMessage.textContent = 'Warte auf Spielstart...';
+    }
+    
+    // In test mode, update message
+    if (window.testMode) {
+        turnMessage.textContent = 'Test-Modus: Du kannst beide Spieler steuern!';
     }
     
     // Clear any previous game over messages and re-enable board
@@ -648,7 +654,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.6.0';
+        versionEl.textContent = '1.7.0';
     }
 });
 
