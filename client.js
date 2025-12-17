@@ -713,6 +713,73 @@ function updateBoardBackground() {
     }
 }
 
+// Update current values display
+function updateCurrentValuesDisplay() {
+    const valuesEl = document.getElementById('currentValues');
+    if (valuesEl) {
+        valuesEl.textContent = `scaleMultiplier: ${adjustmentValues.scaleMultiplier}
+offsetYPercent: ${adjustmentValues.offsetYPercent}%
+bgPosYPercent: ${adjustmentValues.bgPosYPercent}%
+offsetXPx: ${adjustmentValues.offsetXPx}px`;
+    }
+}
+
+// Setup adjustment controls
+function setupAdjustmentControls() {
+    const scaleSlider = document.getElementById('scaleSlider');
+    const offsetYSlider = document.getElementById('offsetYSlider');
+    const bgPosYSlider = document.getElementById('bgPosYSlider');
+    const offsetXSlider = document.getElementById('offsetXSlider');
+    
+    const scaleValue = document.getElementById('scaleValue');
+    const offsetYValue = document.getElementById('offsetYValue');
+    const bgPosYValue = document.getElementById('bgPosYValue');
+    const offsetXValue = document.getElementById('offsetXValue');
+    
+    console.log('Setting up adjustment controls...', {
+        scaleSlider: !!scaleSlider,
+        offsetYSlider: !!offsetYSlider,
+        bgPosYSlider: !!bgPosYSlider,
+        offsetXSlider: !!offsetXSlider
+    });
+    
+    if (scaleSlider && scaleValue) {
+        scaleSlider.addEventListener('input', (e) => {
+            adjustmentValues.scaleMultiplier = parseFloat(e.target.value);
+            scaleValue.textContent = adjustmentValues.scaleMultiplier.toFixed(1);
+            console.log('Scale changed to:', adjustmentValues.scaleMultiplier);
+            updateBoardBackground();
+        });
+    }
+    
+    if (offsetYSlider && offsetYValue) {
+        offsetYSlider.addEventListener('input', (e) => {
+            adjustmentValues.offsetYPercent = parseInt(e.target.value);
+            offsetYValue.textContent = adjustmentValues.offsetYPercent;
+            console.log('OffsetY changed to:', adjustmentValues.offsetYPercent);
+            updateBoardBackground();
+        });
+    }
+    
+    if (bgPosYSlider && bgPosYValue) {
+        bgPosYSlider.addEventListener('input', (e) => {
+            adjustmentValues.bgPosYPercent = parseInt(e.target.value);
+            bgPosYValue.textContent = adjustmentValues.bgPosYPercent;
+            console.log('BgPosY changed to:', adjustmentValues.bgPosYPercent);
+            updateBoardBackground();
+        });
+    }
+    
+    if (offsetXSlider && offsetXValue) {
+        offsetXSlider.addEventListener('input', (e) => {
+            adjustmentValues.offsetXPx = parseInt(e.target.value);
+            offsetXValue.textContent = adjustmentValues.offsetXPx;
+            console.log('OffsetX changed to:', adjustmentValues.offsetXPx);
+            updateBoardBackground();
+        });
+    }
+}
+
 // Initialize on page load - skip game init for image adjustment mode
 // initGame();
 
