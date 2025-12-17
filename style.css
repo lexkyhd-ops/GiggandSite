@@ -313,7 +313,7 @@ header h1 {
     max-width: 500px; /* Increased to show more of the image */
     aspect-ratio: 1;
     position: relative;
-    overflow: visible; /* Allow image to extend beyond board */
+    overflow: visible !important; /* Allow image to extend beyond board */
     border: 3px solid #000;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
     /* Transform board to match image coordinates */
@@ -352,6 +352,7 @@ header h1 {
     /* No clipping - show full image */
     clip-path: none !important;
     -webkit-clip-path: none !important;
+    overflow: visible !important;
 }
 
 /* Ensure cells are above the background */
