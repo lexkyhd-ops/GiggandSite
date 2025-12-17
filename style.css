@@ -322,7 +322,7 @@ header h1 {
     /* Fallback background for mobile */
     background-image: url('images/giggand2.png');
     background-size: contain; /* Show full image, will be overridden by JavaScript */
-    background-position: center; /* Will be overridden by JavaScript */
+    background-position: center 70%; /* Center horizontally, position much lower vertically */
     background-repeat: no-repeat;
 }
 
@@ -340,7 +340,7 @@ header h1 {
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
     background-size: contain; /* Show full image, will be overridden by JavaScript */
-    background-position: center; /* Will be overridden by JavaScript */
+    background-position: center 70%; /* Center horizontally, position much lower vertically */
     background-repeat: no-repeat;
     opacity: 1;
     z-index: 0;

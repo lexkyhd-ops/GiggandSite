@@ -667,7 +667,7 @@ function updateBoardBackground() {
                 }
                 .board {
                     background-image: url('${currentBackgroundImage}') !important;
-                    background-position: ${offsetX}px ${offsetY}px !important;
+                    background-position: center ${offsetY}px !important;
                     background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
@@ -686,7 +686,7 @@ function updateBoardBackground() {
             
             // Also set directly on element for mobile compatibility
             board.style.backgroundImage = `url('${currentBackgroundImage}')`;
-            board.style.backgroundPosition = `${offsetX}px ${offsetY}px`;
+            board.style.backgroundPosition = `center ${offsetY}px`;
             board.style.backgroundSize = `${scaledImgWidth}px ${scaledImgHeight}px`;
             board.style.clipPath = clipPath;
             board.style.webkitClipPath = clipPath;
