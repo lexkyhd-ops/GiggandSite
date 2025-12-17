@@ -45,7 +45,9 @@ const board = document.getElementById('board');
 const cells = document.querySelectorAll('.cell');
 
 // Event Listeners
-createRoomBtn.addEventListener('click', createRoom);
+createRoomBtn.addEventListener('click', (event) => {
+    createRoom(event);
+});
 joinRoomBtn.addEventListener('click', showRoomCodeInput);
 joinBtn.addEventListener('click', joinRoom);
 cancelWaitBtn.addEventListener('click', cancelWaiting);
