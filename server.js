@@ -138,9 +138,17 @@ io.on('connection', (socket) => {
             return;
         }
 
-        // Validate move
-        if (room.board[index] !== '' || room.currentTurn !== player) {
-            return;
+        // In test mode, allow player to make moves for both X and O
+        if (room.testMode) {
+            // Allow any move if it's the current turn's symbol
+            if (room.board[index] !== '' || room.currentTurn !== player) {
+                return;
+            }
+        } else {
+            // Normal mode: validate move
+            if (room.board[index] !== '' || room.currentTurn !== player) {
+                return;
+            }
         }
 
         // Make move

@@ -328,9 +328,16 @@ function resetGame() {
 }
 
 function makeMove(index) {
-    if (gameBoard[index] !== '' || !isMyTurn || gameStatus !== 'playing') {
+    if (gameBoard[index] !== '' || gameStatus !== 'playing') {
         return;
     }
+    
+    // In test mode, allow moves for both players
+    // Otherwise, check if it's my turn
+    if (!window.testMode && !isMyTurn) {
+        return;
+    }
+    
     // Visual feedback
     const cell = cells[index];
     cell.style.opacity = '0.5';
@@ -378,25 +385,39 @@ function updateTurn(currentTurn) {
     player1El.classList.remove('active');
     player2El.classList.remove('active');
     
-    if (currentTurn === 'X') {
-        player1El.classList.add('active');
-        turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
-    } else if (currentTurn === 'O') {
-        player2El.classList.add('active');
-        turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
-    } else {
-        turnMessage.textContent = 'Warte auf Spielstart...';
-    }
-    
-    // Enable/disable board based on turn
-    if (gameStatus === 'playing') {
-        if (!isMyTurn) {
-            disableBoard();
-        } else {
+    // In test mode, always enable board and allow both players
+    if (window.testMode) {
+        if (currentTurn === 'X') {
+            player1El.classList.add('active');
+            turnMessage.textContent = `Test-Modus: ${currentTurn} ist dran (du steuerst beide)`;
+        } else if (currentTurn === 'O') {
+            player2El.classList.add('active');
+            turnMessage.textContent = `Test-Modus: ${currentTurn} ist dran (du steuerst beide)`;
+        }
+        // Always enable board in test mode
+        if (gameStatus === 'playing') {
             enableBoard();
         }
     } else {
-        // If game is not playing, disable board
+        if (currentTurn === 'X') {
+            player1El.classList.add('active');
+            turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
+        } else if (currentTurn === 'O') {
+            player2El.classList.add('active');
+            turnMessage.textContent = isMyTurn ? 'Du bist dran!' : 'Gegner ist dran...';
+        } else {
+            turnMessage.textContent = 'Warte auf Spielstart...';
+        }
+        
+        // Enable/disable board based on turn
+        if (gameStatus === 'playing') {
+            if (!isMyTurn) {
+                disableBoard();
+            } else {
+                enableBoard();
+            }
+        } else {
+            // If game is not playing, disable board
         disableBoard();
     }
 }
