@@ -643,7 +643,7 @@ function updateBoardBackground() {
             const clipPath = `polygon(${p4x}% ${p4y}%, ${p1x}% ${p1y}%, ${p3x}% ${p3y}%, ${p2x}% ${p2y}%)`;
             
             // Directly set the background image on the board element
-            // Show full image without clipping - the board border will contain it
+            // Show full image without clipping - extend beyond board boundaries
             const style = document.createElement('style');
             style.textContent = `
                 .board::before {
@@ -654,6 +654,13 @@ function updateBoardBackground() {
                     -webkit-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -moz-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
                     -o-background-size: ${scaledImgWidth}px ${scaledImgHeight}px !important;
+                    /* Extend beyond board to show full image */
+                    top: -50% !important;
+                    left: -50% !important;
+                    right: -50% !important;
+                    bottom: -50% !important;
+                    width: 200% !important;
+                    height: 200% !important;
                     /* Show full image - no clipping */
                     clip-path: none !important;
                     -webkit-clip-path: none !important;
@@ -668,6 +675,7 @@ function updateBoardBackground() {
                     /* Show full image - no clipping */
                     clip-path: none !important;
                     -webkit-clip-path: none !important;
+                    overflow: visible !important;
                 }
             `;
             // Remove old style if exists
@@ -711,7 +719,7 @@ window.addEventListener('resize', () => {
 document.addEventListener('DOMContentLoaded', () => {
     const versionEl = document.getElementById('version');
     if (versionEl) {
-        versionEl.textContent = '1.7.0';
+        versionEl.textContent = '1.8.0';
     }
 });
 

@@ -330,12 +330,12 @@ header h1 {
 .board::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
+    top: -50%; /* Extend beyond top */
+    left: -50%; /* Extend beyond left */
+    right: -50%; /* Extend beyond right */
+    bottom: -50%; /* Extend beyond bottom */
+    width: 200%; /* Make it much larger than board */
+    height: 200%; /* Make it much larger than board */
     background-image: url('images/giggand2.png');
     /* Image dimensions and positioning will be set dynamically via JavaScript */
     /* Map coordinates: P1(401,133), P2(135,336), P3(395,345), P4(159,141) */
@@ -349,7 +349,9 @@ header h1 {
     -webkit-background-size: contain;
     -moz-background-size: contain;
     -o-background-size: contain;
-    /* Clip-path will be set dynamically */
+    /* No clipping - show full image */
+    clip-path: none !important;
+    -webkit-clip-path: none !important;
 }
 
 /* Ensure cells are above the background */
