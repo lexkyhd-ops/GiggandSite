@@ -72,13 +72,15 @@ io.on('connection', (socket) => {
         
         rooms.set(roomCode, room);
         socket.join(roomCode);
-        socket.emit('roomCreated', { roomCode });
-        io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
         
         // If test mode, start game immediately with bot player
         if (testMode) {
+            console.log(`TEST MODE: Starting game immediately for ${playerName}`);
             room.players.push({ id: 'bot', name: 'Bot (Test)', symbol: 'O' });
             room.status = 'playing';
+            socket.emit('roomCreated', { roomCode, testMode: true });
+            io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
+            // Start game immediately
             setTimeout(() => {
                 // Send gameStart to the player
                 io.to(socket.id).emit('gameStart', {
@@ -89,7 +91,10 @@ io.on('connection', (socket) => {
                     scores: room.scores,
                     testMode: true // Indicate test mode
                 });
-            }, 500);
+            }, 100);
+        } else {
+            socket.emit('roomCreated', { roomCode });
+            io.to(roomCode).emit('playerJoined', { playerCount: room.players.length });
         }
         
         console.log(`Room created: ${roomCode} by ${playerName}${testMode ? ' (TEST MODE)' : ''}`);

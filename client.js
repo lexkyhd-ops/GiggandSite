@@ -302,9 +302,9 @@ function createRoom(event) {
     }
     // Check if Shift key is held for test mode or if testMode is explicitly set
     const testMode = (event && event.shiftKey) || (event && event.testMode === true);
-    console.log('Creating room - Test mode:', testMode, 'Event:', event);
+    console.log('Creating room - Test mode:', testMode, 'Event:', event, 'PlayerName:', playerName);
     updateMessage(lobbyMessage, testMode ? 'Erstelle Raum im Test-Modus...' : 'Erstelle Raum...', 'info');
-    socket.emit('createRoom', { playerName, testMode: testMode });
+    socket.emit('createRoom', { playerName: playerName, testMode: !!testMode });
 }
 
 function showRoomCodeInput() {
