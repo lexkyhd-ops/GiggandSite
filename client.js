@@ -601,14 +601,14 @@ function updateBoardBackground() {
                 scaledImgWidth = boardWidth * scaleMultiplier;
                 scaledImgHeight = imgHeight * scale;
                 offsetX = (boardWidth - scaledImgWidth) / 2; // Center horizontally
-                offsetY = (boardHeight - scaledImgHeight) / 2 + (boardHeight * 0.3); // Move much further down
+                offsetY = (boardHeight - scaledImgHeight) / 2 + (boardHeight * 0.6); // Move much further down (60% of board height)
             } else {
                 // Image is taller - scale to be much larger than height
                 scale = (boardHeight * scaleMultiplier) / imgHeight;
                 scaledImgWidth = imgWidth * scale;
                 scaledImgHeight = boardHeight * scaleMultiplier;
                 offsetX = (boardWidth - scaledImgWidth) / 2; // Center horizontally
-                offsetY = (boardHeight - scaledImgHeight) / 2 + (boardHeight * 0.3); // Move much further down
+                offsetY = (boardHeight - scaledImgHeight) / 2 + (boardHeight * 0.6); // Move much further down (60% of board height)
             }
             
             console.log('Image scale calculation:', {
