@@ -766,6 +766,15 @@ function setupAdjustmentControls() {
         });
     }
     
+    if (bgPosXSlider && bgPosXValue) {
+        bgPosXSlider.addEventListener('input', (e) => {
+            adjustmentValues.bgPosXPercent = parseInt(e.target.value);
+            bgPosXValue.textContent = adjustmentValues.bgPosXPercent;
+            console.log('BgPosX changed to:', adjustmentValues.bgPosXPercent);
+            updateBoardBackground();
+        });
+    }
+    
     if (bgPosYSlider && bgPosYValue) {
         bgPosYSlider.addEventListener('input', (e) => {
             adjustmentValues.bgPosYPercent = parseInt(e.target.value);
