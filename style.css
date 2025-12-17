@@ -548,19 +548,26 @@ header h1 {
 
 /* Image Adjustment Panel */
 .adjustment-panel {
-    background: rgba(255, 255, 255, 0.95);
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: rgba(255, 255, 255, 0.98);
     border: 2px solid #333;
     border-radius: 10px;
     padding: 20px;
-    margin: 20px auto;
-    max-width: 600px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+    z-index: 1000;
+    max-height: 90vh;
+    overflow-y: auto;
 }
 
 .adjustment-panel h3 {
     margin-top: 0;
+    margin-bottom: 15px;
     color: #333;
     text-align: center;
+    font-size: 1.2em;
 }
 
 .adjustment-controls {
