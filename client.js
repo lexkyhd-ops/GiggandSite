@@ -730,17 +730,20 @@ offsetXPx: ${adjustmentValues.offsetXPx}px`;
 function setupAdjustmentControls() {
     const scaleSlider = document.getElementById('scaleSlider');
     const offsetYSlider = document.getElementById('offsetYSlider');
+    const bgPosXSlider = document.getElementById('bgPosXSlider');
     const bgPosYSlider = document.getElementById('bgPosYSlider');
     const offsetXSlider = document.getElementById('offsetXSlider');
     
     const scaleValue = document.getElementById('scaleValue');
     const offsetYValue = document.getElementById('offsetYValue');
+    const bgPosXValue = document.getElementById('bgPosXValue');
     const bgPosYValue = document.getElementById('bgPosYValue');
     const offsetXValue = document.getElementById('offsetXValue');
     
     console.log('Setting up adjustment controls...', {
         scaleSlider: !!scaleSlider,
         offsetYSlider: !!offsetYSlider,
+        bgPosXSlider: !!bgPosXSlider,
         bgPosYSlider: !!bgPosYSlider,
         offsetXSlider: !!offsetXSlider
     });
@@ -759,6 +762,15 @@ function setupAdjustmentControls() {
             adjustmentValues.offsetYPercent = parseInt(e.target.value);
             offsetYValue.textContent = adjustmentValues.offsetYPercent;
             console.log('OffsetY changed to:', adjustmentValues.offsetYPercent);
+            updateBoardBackground();
+        });
+    }
+    
+    if (bgPosXSlider && bgPosXValue) {
+        bgPosXSlider.addEventListener('input', (e) => {
+            adjustmentValues.bgPosXPercent = parseInt(e.target.value);
+            bgPosXValue.textContent = adjustmentValues.bgPosXPercent;
+            console.log('BgPosX changed to:', adjustmentValues.bgPosXPercent);
             updateBoardBackground();
         });
     }
