@@ -433,7 +433,8 @@ function updateTurn(currentTurn) {
             }
         } else {
             // If game is not playing, disable board
-        disableBoard();
+            disableBoard();
+        }
     }
 }
 
